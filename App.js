@@ -1,9 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, DrawerLayoutAndroid, Text, View } from "react-native";
-import {styles} from "./Styles";
+import {styles} from "./src/styles/Styles";
 import DatePicker from "react-native-datepicker"
 import {CheckBox, Slider} from "react-native-elements";
-import {MainScreen} from "./screens/MainScreen";
+import {MainScreen} from "./src/screens/MainScreen";
 
 
 class App extends React.Component {
