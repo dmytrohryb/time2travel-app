@@ -1,10 +1,10 @@
-import { Text, TouchableNativeFeedback, View} from "react-native";
+import {Image, Text, TouchableOpacity, View} from "react-native";
 import React from "react";
 import {styles} from "../styles/Styles";
 import axios from 'axios';
 import cheerio from 'react-native-cheerio';
 import {Preview} from '../components/Preview';
-import {Header} from "react-native-elements";
+import {Header, Icon} from "react-native-elements";
 
 export class MainScreen extends React.Component{
 
@@ -24,7 +24,7 @@ export class MainScreen extends React.Component{
             let data = [];
             const $ = cheerio.load(html)
             $('tr.tr-row').each((i, elem) => {
-                console.log()
+
                 let temp1 = $(elem).find('td.tr-date').text().substr(54, 5) + '.2020'
 
                 if(temp1 === date){
@@ -49,11 +49,17 @@ export class MainScreen extends React.Component{
     }
 
     render() {
+        const burgerButton = (
+            (<TouchableOpacity>
+                <Image source={'../../icons/navigate_next-24px.svg'} />
+            </TouchableOpacity>)
+        )
+
         if(this.state.loaded){
             return(
                 <View>
                     <Header
-                        leftComponent={{ icon: 'menu', color: '#fff' }}
+                        leftComponent={burgerButton}
                         centerComponent={{ text: 'TIME 2 TRAVEL', style: { color: '#fff', fontWeight: "bold", fontSize: 16 } }}
                     />
 
@@ -72,7 +78,7 @@ export class MainScreen extends React.Component{
             return(
                 <View>
                     <Header
-                        leftComponent={{ icon: 'menu', color: '#fff' }}
+                        leftComponent={}
                         centerComponent={{ text: 'TIME 2 TRAVEL', style: { color: '#fff', fontWeight: "bold", fontSize: 16 } }}
                     />
                 <Text style={{marginTop: 250, marginLeft: 100}}>Loading...</Text>
@@ -81,3 +87,9 @@ export class MainScreen extends React.Component{
         }
     }
 }
+
+
+
+
+
+

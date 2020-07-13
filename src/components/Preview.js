@@ -26,7 +26,6 @@ export class Preview extends React.Component {
                     switcher = true
                 }
             })
-            console.log(this.state)
             return data;
         }
 
@@ -37,6 +36,7 @@ export class Preview extends React.Component {
             })
             .catch(err => console.log(err))
     }
+
 
     render() {
         let view = <><View style={{margin: 5, borderColor: 'lightblue', borderRadius: 10, borderWidth: 1, padding: 5}}>
