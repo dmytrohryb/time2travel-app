@@ -1,9 +1,10 @@
 import { Text, TouchableNativeFeedback, View} from "react-native";
-import React, {useState, useEffect} from "react";
-import {ListItem} from "react-native-elements";
+import React from "react";
 import {styles} from "../styles/Styles";
 import axios from 'axios';
 import cheerio from 'react-native-cheerio';
+import {Preview} from '../components/Preview';
+import {Header} from "react-native-elements";
 
 export class MainScreen extends React.Component{
 
@@ -12,8 +13,7 @@ export class MainScreen extends React.Component{
         this.state = {
             loaded: false,
             url: 'https://proydisvit.com/shedule?filter[date]=',
-            list: [],
-            adas: 245
+            list: []
         }
 
         this.updateView = this.updateView.bind(this)
@@ -24,7 +24,7 @@ export class MainScreen extends React.Component{
             let data = [];
             const $ = cheerio.load(html)
             $('tr.tr-row').each((i, elem) => {
-
+                console.log()
                 let temp1 = $(elem).find('td.tr-date').text().substr(54, 5) + '.2020'
 
                 if(temp1 === date){
@@ -32,7 +32,8 @@ export class MainScreen extends React.Component{
                         date: date,
                         title: $(elem).find('td.tr-name a').text(),
                         link: $(elem).find('td.tr-name a').attr('href'),
-                        price: $(elem).find('td.tr-price').text().substr(58, 69).replace(/\s/g, '')
+                        price: $(elem).find('td.tr-price').text().substr(58, 69).replace(/\s/g, ''),
+                        location: $(elem).find('td.tr-location').text().substr(58, 40).replace(/\s/g, '')
                     })
                 }
             })
@@ -50,26 +51,33 @@ export class MainScreen extends React.Component{
     render() {
         if(this.state.loaded){
             return(
-                <View style={styles.container}>
+                <View>
+                    <Header
+                        leftComponent={{ icon: 'menu', color: '#fff' }}
+                        centerComponent={{ text: 'TIME 2 TRAVEL', style: { color: '#fff', fontWeight: "bold", fontSize: 16 } }}
+                    />
+
+                <View style={{marginTop: 10}}>
                     <View>
                         {
                             this.state.list.map((l, i) => (
-
-                                <ListItem
-                                    key={i}
-                                    title={l.title}
-                                    subtitle={l.date}
-                                    rightElement={l.price}
-                                    bottomDivider
-                                />
-
+                                <Preview key={i} date={l.date} title={l.title} link={this.state.url.slice(0, 22) + l.link} price={l.price} location={l.location} />
                             ))
                         }
                     </View>
                 </View>
+                </View>
             );
         }else{
-            return(<Text style={{marginTop: 250, marginLeft: 100}}>Loading...</Text>)
+            return(
+                <View>
+                    <Header
+                        leftComponent={{ icon: 'menu', color: '#fff' }}
+                        centerComponent={{ text: 'TIME 2 TRAVEL', style: { color: '#fff', fontWeight: "bold", fontSize: 16 } }}
+                    />
+                <Text style={{marginTop: 250, marginLeft: 100}}>Loading...</Text>
+                </View>
+            )
         }
     }
 }

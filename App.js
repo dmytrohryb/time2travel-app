@@ -5,7 +5,6 @@ import DatePicker from "react-native-datepicker"
 import {CheckBox, Slider} from "react-native-elements";
 import {MainScreen} from "./src/screens/MainScreen";
 
-
 class App extends React.Component {
     constructor(props) {
         super(props);
@@ -109,7 +108,6 @@ class App extends React.Component {
         );
     }
 };
-
 
 export default App;
 
