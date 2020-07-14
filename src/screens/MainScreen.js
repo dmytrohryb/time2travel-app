@@ -1,10 +1,9 @@
-import {Image, Text, TouchableOpacity, View} from "react-native";
+import { Text, View} from "react-native";
 import React from "react";
-import {styles} from "../styles/Styles";
-import axios from 'axios';
-import cheerio from 'react-native-cheerio';
 import {Preview} from '../components/Preview';
 import {Header, Icon} from "react-native-elements";
+import axios from 'axios';
+import cheerio from 'react-native-cheerio';
 
 export class MainScreen extends React.Component{
 
@@ -19,16 +18,20 @@ export class MainScreen extends React.Component{
         this.updateView = this.updateView.bind(this)
     }
 
+
+
     updateView(date){
+        this.setState({list: []})
+        let data = []
         let getData = (html) => {
-            let data = [];
+            let temp = []
             const $ = cheerio.load(html)
             $('tr.tr-row').each((i, elem) => {
 
                 let temp1 = $(elem).find('td.tr-date').text().substr(54, 5) + '.2020'
 
                 if(temp1 === date){
-                    data.push({
+                    temp.push({
                         date: date,
                         title: $(elem).find('td.tr-name a').text(),
                         link: $(elem).find('td.tr-name a').attr('href'),
@@ -37,29 +40,24 @@ export class MainScreen extends React.Component{
                     })
                 }
             })
-            return data;
+            return temp;
         }
 
         axios.get(this.state.url + date)
             .then(res => {
-                let data = getData(res.data)
+                data = getData(res.data)
+
                 this.setState({list: data, loaded: true})
             })
             .catch(err => console.log(err))
     }
 
     render() {
-        const burgerButton = (
-            (<TouchableOpacity>
-                <Image source={'../../icons/navigate_next-24px.svg'} />
-            </TouchableOpacity>)
-        )
-
         if(this.state.loaded){
             return(
                 <View>
                     <Header
-                        leftComponent={burgerButton}
+                        leftComponent={{ icon: 'menu', color: '#fff' }}
                         centerComponent={{ text: 'TIME 2 TRAVEL', style: { color: '#fff', fontWeight: "bold", fontSize: 16 } }}
                     />
 
@@ -78,7 +76,7 @@ export class MainScreen extends React.Component{
             return(
                 <View>
                     <Header
-                        leftComponent={}
+                        leftComponent={{ icon: 'menu', color: '#fff' }}
                         centerComponent={{ text: 'TIME 2 TRAVEL', style: { color: '#fff', fontWeight: "bold", fontSize: 16 } }}
                     />
                 <Text style={{marginTop: 250, marginLeft: 100}}>Loading...</Text>
@@ -93,3 +91,33 @@ export class MainScreen extends React.Component{
 
 
 
+/*
+ let data = []
+        let getData = (html) => {
+            let temp = []
+            const $ = cheerio.load(html)
+            $('tr.tr-row').each((i, elem) => {
+
+                let temp1 = $(elem).find('td.tr-date').text().substr(54, 5) + '.2020'
+
+                if(temp1 === date){
+                    temp.push({
+                        date: date,
+                        title: $(elem).find('td.tr-name a').text(),
+                        link: $(elem).find('td.tr-name a').attr('href'),
+                        price: $(elem).find('td.tr-price').text().substr(58, 69).replace(/\s/g, ''),
+                        location: $(elem).find('td.tr-location').text().substr(58, 40).replace(/\s/g, '')
+                    })
+                }
+            })
+            return temp;
+        }
+
+        axios.get(this.state.url + date)
+            .then(res => {
+                data = getData(res.data)
+
+                this.setState({list: data, loaded: true})
+            })
+            .catch(err => console.log(err))
+ */

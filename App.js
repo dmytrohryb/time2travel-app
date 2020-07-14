@@ -103,7 +103,7 @@ class App extends React.Component {
                 drawerPosition={'left'}
                 renderNavigationView={() => navigationView}
             >
-                <MainScreen ref={this.MainScreen} />
+                <MainScreen ref={this.MainScreen} date={this.state.date} />
             </DrawerLayoutAndroid>
         );
     }
