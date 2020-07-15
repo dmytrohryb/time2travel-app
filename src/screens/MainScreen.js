@@ -1,9 +1,8 @@
 import { Text, View} from "react-native";
 import React from "react";
 import {Preview} from '../components/Preview';
-import {Header, Icon} from "react-native-elements";
-import axios from 'axios';
-import cheerio from 'react-native-cheerio';
+import {Header} from "react-native-elements";
+import {getData} from '../parser/ProidysvitData';
 
 export class MainScreen extends React.Component{
 
@@ -11,45 +10,20 @@ export class MainScreen extends React.Component{
         super(props);
         this.state = {
             loaded: false,
-            url: 'https://proydisvit.com/shedule?filter[date]=',
             list: []
         }
 
         this.updateView = this.updateView.bind(this)
     }
 
+    updateView(date, duration){
+        this.setState({loaded: false, list: []})
 
-
-    updateView(date){
-        this.setState({list: []})
-        let data = []
-        let getData = (html) => {
-            let temp = []
-            const $ = cheerio.load(html)
-            $('tr.tr-row').each((i, elem) => {
-
-                let temp1 = $(elem).find('td.tr-date').text().substr(54, 5) + '.2020'
-
-                if(temp1 === date){
-                    temp.push({
-                        date: date,
-                        title: $(elem).find('td.tr-name a').text(),
-                        link: $(elem).find('td.tr-name a').attr('href'),
-                        price: $(elem).find('td.tr-price').text().substr(58, 69).replace(/\s/g, ''),
-                        location: $(elem).find('td.tr-location').text().substr(58, 40).replace(/\s/g, '')
-                    })
-                }
-            })
-            return temp;
-        }
-
-        axios.get(this.state.url + date)
+        getData(date, duration)
             .then(res => {
-                data = getData(res.data)
-
-                this.setState({list: data, loaded: true})
+                this.setState({list: res, loaded: true})
             })
-            .catch(err => console.log(err))
+            .catch(err => console.error(err))
     }
 
     render() {
@@ -65,7 +39,15 @@ export class MainScreen extends React.Component{
                     <View>
                         {
                             this.state.list.map((l, i) => (
-                                <Preview key={i} date={l.date} title={l.title} link={this.state.url.slice(0, 22) + l.link} price={l.price} location={l.location} />
+                                <Preview
+                                    key={i}
+                                    title={l.title}
+                                    date={l.date}
+                                    location={l.location}
+                                    price={l.price}
+                                    duration={l.duration}
+                                />
+
                             ))
                         }
                     </View>
@@ -85,39 +67,3 @@ export class MainScreen extends React.Component{
         }
     }
 }
-
-
-
-
-
-
-/*
- let data = []
-        let getData = (html) => {
-            let temp = []
-            const $ = cheerio.load(html)
-            $('tr.tr-row').each((i, elem) => {
-
-                let temp1 = $(elem).find('td.tr-date').text().substr(54, 5) + '.2020'
-
-                if(temp1 === date){
-                    temp.push({
-                        date: date,
-                        title: $(elem).find('td.tr-name a').text(),
-                        link: $(elem).find('td.tr-name a').attr('href'),
-                        price: $(elem).find('td.tr-price').text().substr(58, 69).replace(/\s/g, ''),
-                        location: $(elem).find('td.tr-location').text().substr(58, 40).replace(/\s/g, '')
-                    })
-                }
-            })
-            return temp;
-        }
-
-        axios.get(this.state.url + date)
-            .then(res => {
-                data = getData(res.data)
-
-                this.setState({list: data, loaded: true})
-            })
-            .catch(err => console.log(err))
- */

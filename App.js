@@ -11,7 +11,7 @@ class App extends React.Component {
 
         this.state = {
             date: this.currentDate(),
-            countDays: 1,
+            duration: 1,
             onlyUkraine: false,
         }
 
@@ -21,7 +21,7 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        this.MainScreen.current.updateView(this.state.date)
+        this.MainScreen.current.updateView(this.state.date, this.state.duration)
     }
 
     currentDate(){
@@ -71,14 +71,14 @@ class App extends React.Component {
                     <Text style={{color: '#fff'}}>Продолжительность: </Text>
                 </View>
                 <Slider
-                    minimumValue={1}
-                    maximumValue={14}
+                    minimumValue={0}
+                    maximumValue={21}
                     step={1}
                     thumbTintColor='#0080ff'
-                    value={this.state.countDays}
-                    onValueChange={value => this.setState({countDays: value})}
+                    value={this.state.duration}
+                    onValueChange={value => this.setState({duration: value})}
                 />
-                <Text>Дней: {this.state.countDays}</Text>
+                <Text>Дней: {this.state.duration}</Text>
 
                 <View style={{marginTop: 20, marginBottom: 10}}>
                     <CheckBox
@@ -92,7 +92,7 @@ class App extends React.Component {
                 <Button
                     title="Применить"
                     onPress={()=>{
-                        this.MainScreen.current.updateView(this.state.date)
+                        this.MainScreen.current.updateView(this.state.date, this.state.duration)
                     }}
                 />
             </View>
