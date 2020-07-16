@@ -12,9 +12,7 @@ const getList = async (date) => {
 
     const $ = cheerio.load(response.data)
     $('tr.tr-row').each((i, elem) => {
-
         if ($(elem).find('td.tr-date').text().substr(54, 5) + '.2020' === date) {
-
             tempData.push({
                 date: date,
                 title: $(elem).find('td.tr-name a').text(),
@@ -22,7 +20,6 @@ const getList = async (date) => {
                 price: $(elem).find('td.tr-price').text().substr(58, 69).replace(/\s/g, ''),
                 location: $(elem).find('td.tr-location').text().substr(58, 40).replace(/\s/g, ''),
             })
-
         }
     })
 
@@ -48,7 +45,7 @@ const getDuration = async (link) => {
     return data
 }
 
-export const getData = async (date, duration) => {
+export const getData = async (date, duration, cost) => {
 
     const data1 = await getList(date)
     const durations = []
@@ -58,8 +55,122 @@ export const getData = async (date, duration) => {
         durations.push(await getDuration(data1[i].link))
     }
 
-    for (let i = 0; i < data1.length; i++) {
-        if(duration != 0){
+    for (let i = 0; i < data1.length; i++){
+
+        if(duration !== 0 && cost.min === '' && cost.max === ''){
+            if(parseInt(durations[i].substr(0, 1)) === duration){
+                result.push({
+                    date: data1[i].date,
+                    title: data1[i].title,
+                    link: URL1 + data1[i].link,
+                    price: data1[i].price,
+                    location: data1[i].location,
+                    duration: durations[i].substr(0,1)
+                })
+            }
+        }else if(duration === 0 && cost.min === '' && cost.max === ''){
+            result.push({
+                date: data1[i].date,
+                title: data1[i].title,
+                link: URL1 + data1[i].link,
+                price: data1[i].price,
+                location: data1[i].location,
+                duration: durations[i].substr(0,1)
+            })
+        }else if(duration === 0 && cost.min !== '' && cost.max !== ''){
+            if(parseInt(data1[i].price) > cost.min && parseInt(data1[i].price) < cost.max){
+                result.push({
+                    date: data1[i].date,
+                    title: data1[i].title,
+                    link: URL1 + data1[i].link,
+                    price: data1[i].price,
+                    location: data1[i].location,
+                    duration: durations[i].substr(0,1)
+                })
+            }
+        }else if(duration === 0 && cost.min === '' && cost.max !== ''){
+            if(parseInt(data1[i].price) < cost.max){
+                result.push({
+                    date: data1[i].date,
+                    title: data1[i].title,
+                    link: URL1 + data1[i].link,
+                    price: data1[i].price,
+                    location: data1[i].location,
+                    duration: durations[i].substr(0,1)
+                })
+            }
+        }else if(duration === 0 && cost.min !== '' && cost.max === ''){
+            if(parseInt(data1[i].price) > cost.min){
+                result.push({
+                    date: data1[i].date,
+                    title: data1[i].title,
+                    link: URL1 + data1[i].link,
+                    price: data1[i].price,
+                    location: data1[i].location,
+                    duration: durations[i].substr(0,1)
+                })
+            }
+        }else if(duration !== 0 && cost.min !== '' && cost.max !== ''){
+            if(parseInt(durations[i].substr(0, 1)) === duration){
+                if(cost.min < data1[i].price && cost.max > data1[i].price){
+                    result.push({
+                        date: data1[i].date,
+                        title: data1[i].title,
+                        link: URL1 + data1[i].link,
+                        price: data1[i].price,
+                        location: data1[i].location,
+                        duration: durations[i].substr(0,1)
+                    })
+                }
+            }
+        }else if(duration !== 0 && cost.min !== '' && cost.max === ''){
+            if(parseInt(durations[i].substr(0, 1)) === duration) {
+                if (parseInt(data1[i].price) > cost.min) {
+                    result.push({
+                        date: data1[i].date,
+                        title: data1[i].title,
+                        link: URL1 + data1[i].link,
+                        price: data1[i].price,
+                        location: data1[i].location,
+                        duration: durations[i].substr(0, 1)
+                    })
+                }
+            }
+        }else if(duration !== 0 && cost.min === '' && cost.max !== ''){
+            if(parseInt(durations[i].substr(0, 1)) === duration){
+                if(cost.max > data1[i].price){
+                    result.push({
+                        date: data1[i].date,
+                        title: data1[i].title,
+                        link: URL1 + data1[i].link,
+                        price: data1[i].price,
+                        location: data1[i].location,
+                        duration: durations[i].substr(0, 1)
+                    })
+                }
+            }
+        }
+    }
+    return result
+}
+
+
+let getPriceOnlyNum = (price) => {
+    let _price
+    for (let i = 0; i < price.length; i++){
+        if(parseInt(price[i])){
+            _price += price[i]
+        }
+    }
+    return _price
+}
+
+
+/*
+for (let i = 0; i < data1.length; i++) {
+        console.log(parseInt(durations[i].substr(0, 1)))
+
+        if(duration != 0 && cost === {}){
             if(parseInt(durations[i].substr(0, 1)) == duration){
                 result.push({
                     date: data1[i].date,
@@ -69,8 +180,9 @@ export const getData = async (date, duration) => {
                     location: data1[i].location,
                     duration: durations[i].substr(0,1)
                 })
+                console.log(true)
             }
-        }else{
+        }else if(duration == 0 && cost == {}){
             result.push({
                 date: data1[i].date,
                 title: data1[i].title,
@@ -79,11 +191,32 @@ export const getData = async (date, duration) => {
                 location: data1[i].location,
                 duration: durations[i].substr(0,1)
             })
+        }else if(duration != 0 && cost != {}){
+            if(parseInt(durations[i].substr(0, 1)) == duration){
+                let price = getPriceOnlyNum(data1[i].price)
+                if(price <= cost.max && price >= cost.min){
+                    result.push({
+                        date: data1[i].date,
+                        title: data1[i].title,
+                        link: data1[i].link,
+                        price: data1[i].price,
+                        location: data1[i].location,
+                        duration: durations[i].substr(0,1)
+                    })
+                }
+            }
+        }else if(duration == 0 && cost != {}){
+            let price = getPriceOnlyNum(data1[i].price)
+            if(price <= cost.max && price >= cost.min){
+                result.push({
+                    date: data1[i].date,
+                    title: data1[i].title,
+                    link: data1[i].link,
+                    price: data1[i].price,
+                    location: data1[i].location,
+                    duration: durations[i].substr(0,1)
+                })
+            }
         }
-
     }
-
-    return result
-}
-
-
+ */

@@ -16,10 +16,10 @@ export class MainScreen extends React.Component{
         this.updateView = this.updateView.bind(this)
     }
 
-    updateView(date, duration){
+    updateView(date, duration, cost){
         this.setState({loaded: false, list: []})
 
-        getData(date, duration)
+        getData(date, duration, cost)
             .then(res => {
                 this.setState({list: res, loaded: true})
             })
