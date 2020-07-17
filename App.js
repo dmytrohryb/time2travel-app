@@ -11,7 +11,7 @@ class App extends React.Component {
 
         this.state = {
             date: this.currentDate(),
-            duration: 1,
+            duration: 0,
             min: '',
             max: ''
         }
@@ -50,7 +50,14 @@ class App extends React.Component {
 
     render() {
         const navigationView = (
-            <View style={styles.navigationContainer}>
+            <View style={{
+                flex: 1,
+                paddingTop: 35,
+                backgroundColor: "#fff",
+                padding: 8,
+                justifyContent: "space-between"
+            }}>
+                <View>
                 <View style={{padding: 10, backgroundColor: '#0080ff'}}>
                     <Text style={{color: '#fff'}}>Дата начала: </Text>
                 </View>
@@ -122,6 +129,13 @@ class App extends React.Component {
                     }}
                 />
                 </View>
+                </View>
+                <Button
+                    title="Отключить рекламу"
+                    onPress={()=>{
+                        this.MainScreen.current.updateView(this.state.date, this.state.duration, {min: this.state.min, max: this.state.max})
+                    }}
+                />
             </View>
         )
         return (

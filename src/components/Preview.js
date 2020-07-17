@@ -23,7 +23,7 @@ export class Preview extends React.Component {
                         <Text style={{color: 'grey', fontWeight: "bold"}}>регион: </Text>
                         <Text>{this.props.location}</Text>
                     </View>
-                    <Text style={{fontWeight: "bold", color: "grey"}}>{this.props.price}</Text>
+                    <Text style={{fontWeight: "bold", color: "grey"}}>{this.props.price} грн</Text>
                 </View>
                 <View style={{flexDirection: "row"}}>
                     <Text style={{color: 'grey', fontWeight: "bold"}}>дата начала: </Text>
