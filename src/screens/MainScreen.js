@@ -1,8 +1,9 @@
-import { Text, View} from "react-native";
+import { Text, View, ScrollView, SafeAreaView} from "react-native";
 import React from "react";
 import {Preview} from '../components/Preview';
 import {Header} from "react-native-elements";
-import {getData} from '../parser/ProidysvitData';
+import {Parser} from "../parser/Parser";
+import {ListPreview} from "../components/ListPreview";
 
 export class MainScreen extends React.Component{
 
@@ -19,40 +20,25 @@ export class MainScreen extends React.Component{
     updateView(date, duration, cost){
         this.setState({loaded: false, list: []})
 
-        getData(date, duration, cost)
+        Parser(date, duration, cost)
             .then(res => {
                 this.setState({list: res, loaded: true})
             })
-            .catch(err => console.error(err))
     }
 
     render() {
         if(this.state.loaded){
             return(
-                <View>
+
+                <ScrollView>
                     <Header
                         leftComponent={{ icon: 'menu', color: '#fff' }}
                         centerComponent={{ text: 'TIME 2 TRAVEL', style: { color: '#fff', fontWeight: "bold", fontSize: 16 } }}
                     />
 
-                <View style={{marginTop: 10}}>
-                    <View>
-                        {
-                            this.state.list.map((l, i) => (
-                                <Preview
-                                    key={i}
-                                    title={l.title}
-                                    date={l.date}
-                                    location={l.location}
-                                    price={l.price}
-                                    duration={l.duration}
-                                />
+                    <ListPreview list={this.state.list} />
+                </ScrollView>
 
-                            ))
-                        }
-                    </View>
-                </View>
-                </View>
             );
         }else{
             return(

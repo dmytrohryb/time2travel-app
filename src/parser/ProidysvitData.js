@@ -45,12 +45,12 @@ const getDuration = async (link) => {
     return data
 }
 
-export const getData = async (date, duration, cost) => {
+export const getDataProidysvit = async (date, duration, cost, cur) => {
 
     const data1 = await getList(date)
     const durations = []
     const result = []
-    const cur = await axios.get('https://api.privatbank.ua/p24api/pubinfo?json&exchange&coursid=5')
+
 
     for (let i = 0; i < data1.length; i++) {
         durations.push(await getDuration(data1[i].link))
@@ -58,14 +58,14 @@ export const getData = async (date, duration, cost) => {
 
     for (let i = 0; i < data1.length; i++){
         if(duration !== 0 && cost.min === '' && cost.max === ''){
-            if(parseInt(durations[i].substr(0, 1)) === duration){
+            if(getDurationOnlyNum(durations[i]) === duration){
                 result.push({
                     date: data1[i].date,
                     title: data1[i].title,
                     link: URL1 + data1[i].link,
-                    price: Math.round(getPriceOnlyNum(data1[i].price, cur.data)),
+                    price: Math.round(getPriceOnlyNum(data1[i].price, cur)),
                     location: data1[i].location,
-                    duration: durations[i].substr(0,1)
+                    duration: getDurationOnlyNum(durations[i])
                 })
             }
         }else if(duration === 0 && cost.min === '' && cost.max === ''){
@@ -73,79 +73,79 @@ export const getData = async (date, duration, cost) => {
                 date: data1[i].date,
                 title: data1[i].title,
                 link: URL1 + data1[i].link,
-                price: Math.round(getPriceOnlyNum(data1[i].price, cur.data)),
+                price: Math.round(getPriceOnlyNum(data1[i].price, cur)),
                 location: data1[i].location,
-                duration: durations[i].substr(0,1)
+                duration: getDurationOnlyNum(durations[i])
             })
         }else if(duration === 0 && cost.min !== '' && cost.max !== ''){
-            if(Math.round(getPriceOnlyNum(data1[i].price, cur.data)) > cost.min && Math.round(getPriceOnlyNum(data1[i].price, cur.data)) < cost.max){
+            if(Math.round(getPriceOnlyNum(data1[i].price, cur)) > cost.min && Math.round(getPriceOnlyNum(data1[i].price, cur)) < cost.max){
                 result.push({
                     date: data1[i].date,
                     title: data1[i].title,
                     link: URL1 + data1[i].link,
-                    price: Math.round(getPriceOnlyNum(data1[i].price, cur.data)),
+                    price: Math.round(getPriceOnlyNum(data1[i].price, cur)),
                     location: data1[i].location,
-                    duration: durations[i].substr(0,1)
+                    duration: getDurationOnlyNum(durations[i])
                 })
             }
         }else if(duration === 0 && cost.min === '' && cost.max !== ''){
-            if(Math.round(getPriceOnlyNum(data1[i].price, cur.data)) < cost.max){
+            if(Math.round(getPriceOnlyNum(data1[i].price, cur)) < cost.max){
                 result.push({
                     date: data1[i].date,
                     title: data1[i].title,
                     link: URL1 + data1[i].link,
-                    price: Math.round(getPriceOnlyNum(data1[i].price, cur.data)),
+                    price: Math.round(getPriceOnlyNum(data1[i].price, cur)),
                     location: data1[i].location,
-                    duration: durations[i].substr(0,1)
+                    duration: getDurationOnlyNum(durations[i])
                 })
             }
         }else if(duration === 0 && cost.min !== '' && cost.max === ''){
-            if(Math.round(getPriceOnlyNum(data1[i].price, cur.data)) > cost.min){
+            if(Math.round(getPriceOnlyNum(data1[i].price, cur)) > cost.min){
                 result.push({
                     date: data1[i].date,
                     title: data1[i].title,
                     link: URL1 + data1[i].link,
-                    price: Math.round(getPriceOnlyNum(data1[i].price, cur.data)),
+                    price: Math.round(getPriceOnlyNum(data1[i].price, cur)),
                     location: data1[i].location,
-                    duration: durations[i].substr(0,1)
+                    duration: getDurationOnlyNum(durations[i])
                 })
             }
         }else if(duration !== 0 && cost.min !== '' && cost.max !== ''){
-            if(parseInt(durations[i].substr(0, 1)) === duration){
-                if(cost.min < Math.round(getPriceOnlyNum(data1[i].price, cur.data)) && cost.max > Math.round(getPriceOnlyNum(data1[i].price, cur.data))){
+            if(getDurationOnlyNum(durations[i]) === duration){
+                if(cost.min < Math.round(getPriceOnlyNum(data1[i].price, cur)) && cost.max > Math.round(getPriceOnlyNum(data1[i].price, cur.data))){
                     result.push({
                         date: data1[i].date,
                         title: data1[i].title,
                         link: URL1 + data1[i].link,
-                        price: Math.round(getPriceOnlyNum(data1[i].price, cur.data)),
+                        price: Math.round(getPriceOnlyNum(data1[i].price, cur)),
                         location: data1[i].location,
-                        duration: durations[i].substr(0,1)
+                        duration: getDurationOnlyNum(durations[i])
                     })
                 }
             }
         }else if(duration !== 0 && cost.min !== '' && cost.max === ''){
-            if(parseInt(durations[i].substr(0, 1)) === duration) {
-                if (Math.round(getPriceOnlyNum(data1[i].price, cur.data)) > cost.min) {
+            if(getDurationOnlyNum(durations[i]) === duration) {
+                if (Math.round(getPriceOnlyNum(data1[i].price, cur)) > cost.min) {
                     result.push({
                         date: data1[i].date,
                         title: data1[i].title,
                         link: URL1 + data1[i].link,
-                        price: Math.round(getPriceOnlyNum(data1[i].price, cur.data)),
+                        price: Math.round(getPriceOnlyNum(data1[i].price, cur)),
                         location: data1[i].location,
-                        duration: durations[i].substr(0, 1)
+                        duration: getDurationOnlyNum(durations[i])
                     })
                 }
             }
         }else if(duration !== 0 && cost.min === '' && cost.max !== ''){
-            if(parseInt(durations[i].substr(0, 1)) === duration){
-                if(cost.max > Math.round(getPriceOnlyNum(data1[i].price, cur.data))){
+            if(getDurationOnlyNum(durations[i]) === duration){
+                if(cost.max > Math.round(getPriceOnlyNum(data1[i].price, cur))){
                     result.push({
                         date: data1[i].date,
                         title: data1[i].title,
                         link: URL1 + data1[i].link,
-                        price: Math.round(getPriceOnlyNum(data1[i].price, cur.data)),
+                        price: Math.round(getPriceOnlyNum(data1[i].price, cur)),
                         location: data1[i].location,
-                        duration: durations[i].substr(0, 1)
+                        duration: getDurationOnlyNum(durations[i])
                     })
                 }
             }
@@ -185,3 +185,13 @@ let getPriceOnlyNum = (price, cur) => {
     return _price
 }
 
+let getDurationOnlyNum = (duration) => {
+    let _duration = ''
+    for (let i = 0; i < duration.length; i++){
+        if(Number.isInteger(parseInt(duration[i]))){
+            _duration += duration[i]
+        }else{
+            return _duration
+        }
+    }
+}

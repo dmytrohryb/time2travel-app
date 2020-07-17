@@ -23,9 +23,7 @@ class App extends React.Component {
 
     }
 
-    componentDidMount() {
-        this.MainScreen.current.updateView(this.state.date, this.state.duration)
-    }
+
 
     onChangeText1(text){
         this.setState({min: text})
