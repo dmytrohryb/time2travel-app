@@ -1,1 +1,0 @@
-# turism-app-react-native

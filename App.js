@@ -23,8 +23,6 @@ class App extends React.Component {
 
     }
 
-
-
     onChangeText1(text){
         this.setState({min: text})
     }

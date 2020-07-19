@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/turism-app-react-native.iml" filepath="$PROJECT_DIR$/.idea/turism-app-react-native.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/time2travel.iml" filepath="$PROJECT_DIR$/.idea/time2travel.iml" />
     </modules>
   </component>
 </project>
