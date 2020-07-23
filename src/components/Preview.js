@@ -8,14 +8,14 @@ export class Preview extends React.Component {
 
     render() {
         let dayText = ''
-        if(this.props.duration == 1){
+        if(this.props.duration === 1){
             dayText = 'день'
         }else if(this.props.duration > 1 && this.props.duration < 5){
             dayText = 'дня'
         }else{
             dayText = 'дней'
         }
-        let view = <><View style={{margin: 5, borderColor: 'lightblue', borderRadius: 10, borderWidth: 1, padding: 5}}>
+        let view = <><View style={{marginLeft: 5, marginRight: 5, borderBottomWidth: 1, borderColor: 'lightblue', borderRadius: 10, padding: 5}}>
             <View style={{flexDirection: "column"}}>
                 <View><Text style={{marginBottom: 5, fontWeight: "bold", color: "grey" ,fontSize: 16}}>{this.props.title}</Text></View>
                 <View style={{flexDirection: "row", justifyContent: "space-between"}}>

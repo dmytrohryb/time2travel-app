@@ -1,8 +1,7 @@
 import React from "react";
 import { Button, DrawerLayoutAndroid, Text, View, TextInput } from "react-native";
-import {styles} from "./src/styles/Styles";
 import DatePicker from "react-native-datepicker"
-import {CheckBox, Slider} from "react-native-elements";
+import {Slider} from "react-native-elements";
 import {MainScreen} from "./src/screens/MainScreen";
 
 class App extends React.Component {
@@ -103,7 +102,7 @@ class App extends React.Component {
                 <TextInput
                     style={{textAlign: "center", marginLeft:10, height: 40, width: 60, borderColor: 'gray', borderWidth: 1 }}
                     onChangeText={text => this.onChangeText1(text)}
-                    value={40}
+                    value={this.state.min}
                 />
                     <Text style={{marginLeft: 10, marginTop: 8}}>грн</Text>
 
@@ -111,8 +110,7 @@ class App extends React.Component {
                 <TextInput
                     style={{textAlign: "center", marginLeft: 10, height: 40, width: 60, borderColor: 'gray', borderWidth: 1 }}
                     onChangeText={text => this.onChangeText2(text)}
-                    value={40}
-                    textA
+                    value={this.state.max}
                 />
                 <Text style={{marginLeft: 10, marginTop: 8}}>грн</Text>
                 </View>
@@ -125,11 +123,20 @@ class App extends React.Component {
                     }}
                 />
                 </View>
+                    <View style={{marginTop: 10}}>
+                        <Button
+                            title="Сбросить фильтры"
+                            onPress={()=>{
+                                this.setState({date: '', duration: 0, min: '', max: ''})
+                            }}
+                        />
+                    </View>
+
                 </View>
                 <Button
                     title="Отключить рекламу"
                     onPress={()=>{
-                        this.MainScreen.current.updateView(this.state.date, this.state.duration, {min: this.state.min, max: this.state.max})
+
                     }}
                 />
             </View>
@@ -140,12 +147,10 @@ class App extends React.Component {
                 drawerPosition={'left'}
                 renderNavigationView={() => navigationView}
             >
-                <MainScreen ref={this.MainScreen} date={this.state.date} />
+                <MainScreen ref={this.MainScreen} />
             </DrawerLayoutAndroid>
         );
     }
 };
 
 export default App;
-
-
