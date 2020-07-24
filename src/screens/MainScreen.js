@@ -1,8 +1,8 @@
-import {Text, View, ActivityIndicator, Button, ScrollView, SafeAreaView} from "react-native";
+import {Text, View, Button, ScrollView, SafeAreaView} from "react-native";
 import React from "react";
-import {Header} from "react-native-elements";
+import {Header, SearchBar} from "react-native-elements";
 import axios from 'axios'
-import {ListPreview} from "../components/ListPreview";
+import {ListPreview} from "../components/ListPreview"
 
 export class MainScreen extends React.Component{
 
@@ -51,18 +51,21 @@ export class MainScreen extends React.Component{
                         centerComponent={{ text: 'TIME 2 TRAVEL', style: { color: '#fff', fontWeight: "bold", fontSize: 16 } }}
                     />
                     <SafeAreaView style={{height: '85%'}}>
+                        <Text style={{marginLeft: 158, fontWeight: "bold", color:"grey"}}>Всего найдено: {this.state.list.length}</Text>
                         <ScrollView>
                             <ListPreview ref={this.ListPreview} stateUp={this.getChildState} list={this.state.list} />
                         </ScrollView>
                     </SafeAreaView>
                     {(this.state.currentScreen > 1) ? backBtn = false : backBtn = true}
                     {(this.state.currentScreen < this.state.countScreens) ? nextBtn = false : nextBtn = true}
+
                     <View style={{flexDirection: "row", marginLeft: '27.5%'}}>
+
                         <Button title={'        <<        '} disabled={backBtn} onPress={() => {
                             this.ListPreview.current.setScreen(this.state.currentScreen - 1)
                         }}/>
                         <View style={{margin: 7}}>
-                            <Text>{this.state.currentScreen} / {this.state.countScreens}</Text>
+                            <Text style={{fontWeight: "bold", color: 'grey'}}>{this.state.currentScreen} / {this.state.countScreens}</Text>
                         </View>
                         <Button title={'        >>        '} disabled={nextBtn} onPress={() => {
                             this.ListPreview.current.setScreen(this.state.currentScreen + 1)
@@ -81,8 +84,6 @@ export class MainScreen extends React.Component{
                         <View style={{marginTop: 300 ,marginLeft: 180}}>
                             <Text>LOADING ...</Text>
                         </View>
-
-
 
                 </View>
             )

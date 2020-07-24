@@ -51,7 +51,6 @@ export const getDataProidysvit = async (date, duration, cost, cur) => {
     const durations = []
     const result = []
 
-
     for (let i = 0; i < data1.length; i++) {
         durations.push(await getDuration(data1[i].link))
     }

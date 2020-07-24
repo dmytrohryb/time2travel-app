@@ -25,10 +25,6 @@ export class ListPreview extends React.Component{
         this.setScreen = this.setScreen.bind(this)
     }
 
-    componentDidMount() {
-
-    }
-
     setScreen(screenNumber){
         let n = 15
         let tempData = []
@@ -46,14 +42,13 @@ export class ListPreview extends React.Component{
                 break
             }
         }
-        if(screenNumber > this.state.currentScreen){
 
+        if(screenNumber > this.state.currentScreen){
             this.setState({list: tempData, currentScreen: this.state.currentScreen + 1 })
             this.props.stateUp(this.state.currentScreen + 1, this.state.countScreens)
         }else{
             this.setState({list: tempData, currentScreen: this.state.currentScreen - 1 })
             this.props.stateUp(this.state.currentScreen - 1, this.state.countScreens)
-
         }
 
     }

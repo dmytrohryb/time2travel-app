@@ -9,7 +9,7 @@ class App extends React.Component {
         super(props);
 
         this.state = {
-            date: this.currentDate(),
+            date: '',
             duration: 0,
             min: '',
             max: ''
@@ -20,6 +20,10 @@ class App extends React.Component {
         this.onChangeText1 = this.onChangeText1.bind(this)
         this.onChangeText2 = this.onChangeText2.bind(this)
 
+    }
+
+    componentDidMount() {
+        this.MainScreen.current.updateView(this.state.date, this.state.duration, {min: this.state.min, max: this.state.max})
     }
 
     onChangeText1(text){
@@ -60,7 +64,7 @@ class App extends React.Component {
                     style={{width: 280, marginTop: 20}}
                     date={this.state.date}
                     mode="date"
-                    placeholder="select date"
+                    placeholder="выберите дату"
                     format="DD.MM.YYYY"
                     minDate="01-05-2020"
                     maxDate="01-05-2040"
