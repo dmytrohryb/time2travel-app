@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text} from "react-native";
 
+
 export class Preview extends React.Component {
     constructor(props) {
         super(props);
@@ -18,7 +19,12 @@ export class Preview extends React.Component {
         let view = <><View style={{marginLeft: 5, marginRight: 5, borderBottomWidth: 1, borderColor: 'lightblue', borderRadius: 10, padding: 5}}>
             <View style={{flexDirection: "column"}}>
                 <View><Text style={{marginBottom: 5, fontWeight: "bold", color: "grey" ,fontSize: 16}}>{this.props.title}</Text></View>
+                <View style={{flexDirection: "row"}}>
+                    <Text style={{color: 'grey', fontWeight: "bold"}}>организатор: </Text>
+                    <Text>{this.props.site}</Text>
+                </View>
                 <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+
                     <View style={{flexDirection: "row"}}>
                         <Text style={{color: 'grey', fontWeight: "bold"}}>регион: </Text>
                         <Text>{this.props.location}</Text>

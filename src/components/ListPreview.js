@@ -1,6 +1,7 @@
-import {Text, View} from "react-native";
+import {Button, Text, View} from "react-native";
 import {Preview} from "./Preview";
 import React from "react";
+
 
 export class ListPreview extends React.Component{
     constructor(props) {
@@ -54,15 +55,17 @@ export class ListPreview extends React.Component{
     }
 
     render() {
-        if (typeof this.state.list === typeof []){
+        if (this.state.list != []){
             return(
                 <View>
                     <View>
+
                         {
                             this.state.list.map((l, i) => (
                                 <Preview
                                     key={i}
                                     title={l.title}
+                                    site={l.site}
                                     date={l.date}
                                     location={l.location}
                                     price={l.price}
@@ -76,21 +79,5 @@ export class ListPreview extends React.Component{
         }else{
             return(<View><Text>Not data</Text></View>)
         }
-
-
     }
 }
-/*
-{(this.state.currentScreen > 1) ? backBtn = false : backBtn = true}
-{(this.state.currentScreen < this.state.countScreens) ? nextBtn = false : nextBtn = true}
-<View style={{flexDirection: "row", marginLeft: 160}}>
-    <Button title={'  <<  '} disabled={backBtn}  onPress={() => {
-        this.setScreen(this.state.currentScreen - 1)
-    }}/>
-    <View style={{margin: 5}}></View>
-    <Button title={'  >>  '} disabled={nextBtn} onPress={() => {
-        this.setScreen(this.state.currentScreen + 1)
-    }}/>
-</View>
-
- */

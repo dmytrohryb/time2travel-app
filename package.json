@@ -17,7 +17,9 @@
     "react-native-cheerio": "^1.0.0-rc.4",
     "react-native-datepicker": "^1.7.2",
     "react-native-elements": "^2.0.4",
-    "react-native-vector-icons": "^7.0.0"
+    "react-native-search-bar": "^3.5.1",
+    "react-native-vector-icons": "^7.0.0",
+    "react-native-webview": "^10.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.10.5",
