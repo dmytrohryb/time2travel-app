@@ -15,8 +15,7 @@ export class MainScreen extends React.Component{
             list: [],
             currentScreen: 1,
             countScreens: 1,
-            list2: [],
-            searchText: ''
+            list2: []
         }
         this.ListPreview = React.createRef()
         this.updateView = this.updateView.bind(this)
@@ -47,63 +46,23 @@ export class MainScreen extends React.Component{
     }
 
     searchInList(value){
-        this.setState({loaded: false, list2: [], searchText: value})
-        console.log(value)
+        this.setState({loaded: false, list2: []})
+        let temp = []
         let regExp = new RegExp(value)
-        for(let i = 0; i < this.state.list; i++){
-
-            if(this.state.list[i].title.search(regExp) || this.state.list[i].location.search(regExp)){
-                console.log(true)
-                this.state.list2.push(this.state.list[i])
+        for(let i = 0; i < this.state.list.length; i++){
+            if(this.state.list[i].title.match(regExp) || this.state.list[i].location.match(regExp)){
+                temp.push(this.state.list[i])
             }
         }
-        this.setState({loaded: true})
-        console.log(this.state.list2)
+        this.setState({loaded: true, list2: temp})
+        this.ListPreview.current.update()
     }
 
     render() {
         let backBtn
         let nextBtn
-        
-        if(this.state.loaded && this.state.searchText !== ''){
-            return (
-                <View style={{flex: 1}}>
-                    <Header
-                        leftComponent={{ icon: 'menu', color: '#fff' }}
-                        centerComponent={{ text: 'TIME 2 TRAVEL', style: { color: '#fff', fontWeight: "bold", fontSize: 16 } }}
-                    />
-                    <SearchBar
-                        ref="searchBar"
-                        placeholder="Search"
-                        onChangeText={(value) => {
-                            this.searchInList(value)
-                        }}
-                    />
-                    <Text style={{alignSelf:"center", fontWeight: "bold", color:"grey"}}>Всего найдено: {this.state.list2.length}</Text>
-                    <ScrollView style={{marginBottom: 35}}>
-                        <ListPreview ref={this.ListPreview} stateUp={this.getChildState} list={this.state.list2} />
-                    </ScrollView>
 
-
-                    {(this.state.currentScreen > 1) ? backBtn = false : backBtn = true}
-                    {(this.state.currentScreen < this.state.countScreens) ? nextBtn = false : nextBtn = true}
-
-                    <View style={{flexDirection: "row", position: 'absolute', bottom:0, alignSelf:"center"}}>
-
-                        <Button title={'        <<        '} disabled={backBtn} onPress={() => {
-                            this.ListPreview.current.setScreen(this.state.currentScreen - 1)
-                        }}/>
-                        <View style={{margin: 7}}>
-                            <Text style={{fontWeight: "bold", color: 'grey'}}>{this.state.currentScreen} / {this.state.countScreens}</Text>
-                        </View>
-                        <Button title={'        >>        '} disabled={nextBtn} onPress={() => {
-                            this.ListPreview.current.setScreen(this.state.currentScreen + 1)
-                        }}/>
-                    </View>
-                </View>
-            )
-        }
-        if(this.state.loaded && this.state.searchText === ''){
+        if(this.state.loaded){
             return(
                 <View style={{flex: 1}}>
                     <Header
@@ -117,9 +76,9 @@ export class MainScreen extends React.Component{
                             this.searchInList(value)
                         }}
                     />
-                        <Text style={{alignSelf:"center", fontWeight: "bold", color:"grey"}}>Всего найдено: {this.state.list.length}</Text>
+                        <Text style={{alignSelf:"center", fontWeight: "bold", color:"grey"}}>Всего найдено: {(this.state.list2.length === 0) ? this.state.list.length : this.state.list2.length}</Text>
                         <ScrollView style={{marginBottom: 35}}>
-                            <ListPreview ref={this.ListPreview} stateUp={this.getChildState} list={this.state.list} />
+                            <ListPreview ref={this.ListPreview} stateUp={this.getChildState} list={(this.state.list2.length === 0) ? this.state.list : this.state.list2} />
                         </ScrollView>
 
 

@@ -2,10 +2,20 @@ import {Button, Text, View} from "react-native";
 import {Preview} from "./Preview";
 import React from "react";
 
-
 export class ListPreview extends React.Component{
     constructor(props) {
         super(props);
+
+        this.state = {
+            currentScreen: 1,
+            list: [],
+            countScreens: Math.ceil(this.props.list.length / 15)
+        }
+        this.props.stateUp(this.state.currentScreen, this.state.countScreens)
+        this.setScreen = this.setScreen.bind(this)
+    }
+
+    componentDidMount(){
         let n = 15
         let tempData = []
 
@@ -16,14 +26,7 @@ export class ListPreview extends React.Component{
                 break
             }
         }
-
-        this.state = {
-            currentScreen: 1,
-            list: tempData,
-            countScreens: Math.ceil(this.props.list.length / n)
-        }
-        this.props.stateUp(this.state.currentScreen, this.state.countScreens)
-        this.setScreen = this.setScreen.bind(this)
+        this.setState({list: tempData})
     }
 
     setScreen(screenNumber){
@@ -55,7 +58,7 @@ export class ListPreview extends React.Component{
     }
 
     render() {
-        if (this.state.list != []){
+        if (this.state.list.length !== 0){
             return(
                 <View>
                     <View>
