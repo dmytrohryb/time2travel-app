@@ -26,32 +26,34 @@ export class ListPreview extends React.Component{
                 break
             }
         }
-        this.setState({list: tempData})
+        this.setState({list: tempData, countScreens: Math.ceil(this.props.list.length / 15)})
     }
 
-    setScreen(screenNumber){
+    setScreen(screenNumber) {
         let n = 15
         let tempData = []
         let iterator = 0
-
         if (n * screenNumber === n)
             iterator = 0
         else
             iterator = -15 + n * screenNumber
 
-        for(iterator; iterator < (n * screenNumber); iterator++){
-            if(this.props.list[iterator]){
+        for (iterator; iterator < (n * screenNumber); iterator++) {
+            if (this.props.list[iterator]) {
                 tempData.push(this.props.list[iterator])
-            }else{
+            } else {
                 break
             }
         }
 
-        if(screenNumber > this.state.currentScreen){
-            this.setState({list: tempData, currentScreen: this.state.currentScreen + 1 })
+        if (screenNumber > this.state.currentScreen) {
+            this.setState({list: tempData, currentScreen: this.state.currentScreen + 1})
             this.props.stateUp(this.state.currentScreen + 1, this.state.countScreens)
+        }else if(screenNumber === this.state.currentScreen){
+            this.setState({list: tempData, currentScreen: this.state.currentScreen})
+            this.props.stateUp(this.state.currentScreen, this.state.countScreens)
         }else{
-            this.setState({list: tempData, currentScreen: this.state.currentScreen - 1 })
+            this.setState({list: tempData, currentScreen: this.state.currentScreen - 1})
             this.props.stateUp(this.state.currentScreen - 1, this.state.countScreens)
         }
 
@@ -70,6 +72,7 @@ export class ListPreview extends React.Component{
                                     title={l.title}
                                     site={l.site}
                                     date={l.date}
+                                    link={l.link}
                                     location={l.location}
                                     price={l.price}
                                     duration={l.duration}

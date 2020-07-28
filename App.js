@@ -145,13 +145,15 @@ class App extends React.Component {
                 />
             </View>
         )
+
         return (
+
             <DrawerLayoutAndroid
                 drawerWidth={300}
                 drawerPosition={'left'}
                 renderNavigationView={() => navigationView}
             >
-                <MainScreen ref={this.MainScreen} />
+                <MainScreen ref={this.MainScreen} openDrawer={DrawerLayoutAndroid.openDrawer}/>
             </DrawerLayoutAndroid>
         );
     }

@@ -1,10 +1,10 @@
-import {Text, View, Button, ScrollView} from "react-native";
-import React from "react";
-import {Header} from "react-native-elements";
+import {Text, View, Button, ScrollView, TextInput} from "react-native"
+import React from "react"
+import {Header} from "react-native-elements"
 import axios from 'axios'
 import {ListPreview} from "../components/ListPreview"
+import { Searchbar } from 'react-native-paper'
 var shuffle = require('../components/KnuthShuffle').knuthShuffle
-import SearchBar from 'react-native-search-bar';
 
 export class MainScreen extends React.Component{
 
@@ -20,7 +20,7 @@ export class MainScreen extends React.Component{
         this.ListPreview = React.createRef()
         this.updateView = this.updateView.bind(this)
         this.getChildState = this.getChildState.bind(this)
-        this.searchInList = this.searchInList.bind(this)
+
     }
 
     updateView(date, duration, cost){
@@ -45,19 +45,6 @@ export class MainScreen extends React.Component{
 
     }
 
-    searchInList(value){
-        this.setState({loaded: false, list2: []})
-        let temp = []
-        let regExp = new RegExp(value)
-        for(let i = 0; i < this.state.list.length; i++){
-            if(this.state.list[i].title.match(regExp) || this.state.list[i].location.match(regExp)){
-                temp.push(this.state.list[i])
-            }
-        }
-        this.setState({loaded: true, list2: temp})
-        this.ListPreview.current.update()
-    }
-
     render() {
         let backBtn
         let nextBtn
@@ -66,16 +53,14 @@ export class MainScreen extends React.Component{
             return(
                 <View style={{flex: 1}}>
                     <Header
-                        leftComponent={{ icon: 'menu', color: '#fff' }}
+                        leftComponent={{icon: "menu", color: "#fff"}}
                         centerComponent={{ text: 'TIME 2 TRAVEL', style: { color: '#fff', fontWeight: "bold", fontSize: 16 } }}
                     />
-                    <SearchBar
-                        ref="searchBar"
-                        placeholder="Search"
-                        onChangeText={(value) => {
-                            this.searchInList(value)
-                        }}
+                    <Searchbar
+                        placeholder="Поиск"
+
                     />
+
                         <Text style={{alignSelf:"center", fontWeight: "bold", color:"grey"}}>Всего найдено: {(this.state.list2.length === 0) ? this.state.list.length : this.state.list2.length}</Text>
                         <ScrollView style={{marginBottom: 35}}>
                             <ListPreview ref={this.ListPreview} stateUp={this.getChildState} list={(this.state.list2.length === 0) ? this.state.list : this.state.list2} />
@@ -116,3 +101,21 @@ export class MainScreen extends React.Component{
         }
     }
 }
+
+
+/*
+searchInList(value){
+        this.setState({loaded: false, list2: []})
+
+            let temp = []
+            let regExp = new RegExp(value)
+            for(let i = 0; i < this.state.list.length; i++){
+                if(this.state.list[i].title.match(regExp) || this.state.list[i].location.match(regExp)){
+                    temp.push(this.state.list[i])
+                }
+            }
+            this.setState({loaded: true, list2: temp})
+
+
+    }
+ */
