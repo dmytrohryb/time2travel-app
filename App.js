@@ -15,11 +15,10 @@ class App extends React.Component {
             max: ''
         }
 
-        this.MainScreen = React.createRef();
+        this.MainScreen = React.createRef()
         this.currentDate = this.currentDate.bind(this)
         this.onChangeText1 = this.onChangeText1.bind(this)
         this.onChangeText2 = this.onChangeText2.bind(this)
-
     }
 
     componentDidMount() {
@@ -123,7 +122,9 @@ class App extends React.Component {
                 <Button
                     title="Применить"
                     onPress={()=>{
+                        this.refs['Drawer'].closeDrawer()
                         this.MainScreen.current.updateView(this.state.date, this.state.duration, {min: this.state.min, max: this.state.max})
+
                     }}
                 />
                 </View>
@@ -137,23 +138,27 @@ class App extends React.Component {
                     </View>
 
                 </View>
-                <Button
-                    title="Отключить рекламу"
-                    onPress={()=>{
+                <View>
+                    <Button
+                        title="Настройки"
+                        onPress={()=>{
 
-                    }}
-                />
+                        }}
+                    />
+                </View>
+
             </View>
         )
 
         return (
 
             <DrawerLayoutAndroid
+                ref={'Drawer'}
                 drawerWidth={300}
                 drawerPosition={'left'}
                 renderNavigationView={() => navigationView}
             >
-                <MainScreen ref={this.MainScreen} openDrawer={DrawerLayoutAndroid.openDrawer}/>
+                <MainScreen ref={this.MainScreen} openDrawer={() => this.refs['Drawer'].openDrawer()} />
             </DrawerLayoutAndroid>
         );
     }

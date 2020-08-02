@@ -1,4 +1,4 @@
-import {Button, Text, View} from "react-native";
+import {Text, View} from "react-native";
 import {Preview} from "./Preview";
 import React from "react";
 
@@ -27,6 +27,7 @@ export class ListPreview extends React.Component{
             }
         }
         this.setState({list: tempData, countScreens: Math.ceil(this.props.list.length / 15)})
+        this.props.stateUp(this.state.currentScreen, this.state.countScreens)
     }
 
     setScreen(screenNumber) {
@@ -47,19 +48,20 @@ export class ListPreview extends React.Component{
         }
 
         if (screenNumber > this.state.currentScreen) {
-            this.setState({list: tempData, currentScreen: this.state.currentScreen + 1})
+            this.setState({list: tempData, currentScreen: this.state.currentScreen + 1, countScreens: Math.ceil(this.props.list.length / 15)})
             this.props.stateUp(this.state.currentScreen + 1, this.state.countScreens)
         }else if(screenNumber === this.state.currentScreen){
-            this.setState({list: tempData, currentScreen: this.state.currentScreen})
+            this.setState({list: tempData, currentScreen: this.state.currentScreen, countScreens: Math.ceil(this.props.list.length / 15)})
             this.props.stateUp(this.state.currentScreen, this.state.countScreens)
         }else{
-            this.setState({list: tempData, currentScreen: this.state.currentScreen - 1})
+            this.setState({list: tempData, currentScreen: this.state.currentScreen - 1, countScreens: Math.ceil(this.props.list.length / 15)})
             this.props.stateUp(this.state.currentScreen - 1, this.state.countScreens)
         }
 
     }
 
     render() {
+
         if (this.state.list.length !== 0){
             return(
                 <View>
