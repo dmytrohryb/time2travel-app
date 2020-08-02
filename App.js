@@ -140,7 +140,7 @@ class App extends React.Component {
                 </View>
                 <View>
                     <Button
-                        title="Настройки"
+                        title="About me"
                         onPress={()=>{
 
                         }}
