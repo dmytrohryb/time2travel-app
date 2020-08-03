@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, Text, TouchableNativeFeedback, Linking} from "react-native";
-
+import languages from '../configs/lang-config'
 
 export class Preview extends React.Component {
     constructor(props) {
@@ -47,23 +47,23 @@ export class Preview extends React.Component {
                             fontSize: 16
                         }}>{this.props.title}</Text></View>
                         <View style={{flexDirection: "row"}}>
-                            <Text style={{color: 'grey', fontWeight: "bold"}}>организатор: </Text>
+                            <Text style={{color: 'grey', fontWeight: "bold"}}>{languages.getLanguage()[15]} </Text>
                             <Text>{this.props.site}</Text>
                         </View>
                         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
 
                             <View style={{flexDirection: "row"}}>
-                                <Text style={{color: 'grey', fontWeight: "bold"}}>регион: </Text>
+                                <Text style={{color: 'grey', fontWeight: "bold"}}>{languages.getLanguage()[16]} </Text>
                                 <Text>{this.props.location}</Text>
                             </View>
                             <Text style={{fontWeight: "bold", color: "grey"}}>{this.props.price} грн</Text>
                         </View>
                         <View style={{flexDirection: "row"}}>
-                            <Text style={{color: 'grey', fontWeight: "bold"}}>дата начала: </Text>
+                            <Text style={{color: 'grey', fontWeight: "bold"}}>{languages.getLanguage()[0]} </Text>
                             <Text>{this.props.date}</Text>
                         </View>
                         <View style={{flexDirection: "row"}}>
-                            <Text style={{color: 'grey', fontWeight: "bold"}}>продолжительность: </Text>
+                            <Text style={{color: 'grey', fontWeight: "bold"}}>{languages.getLanguage()[2]} </Text>
                             <Text>{this.props.duration} {dayText}</Text>
                         </View>
                     </View>

@@ -16,6 +16,16 @@ import axios from 'axios'
 import {ListPreview} from "../components/ListPreview"
 const shuffle = require('../components/KnuthShuffle').knuthShuffle
 import {IconButton, ActivityIndicator, Colors} from "react-native-paper"
+import languages from "../configs/lang-config"
+import AsyncStorage from '@react-native-community/async-storage'
+
+const storeData = async (value) => {
+    try {
+        await AsyncStorage.setItem('lang', value)
+    } catch (e) {
+        // saving error
+    }
+}
 
 export class MainScreen extends React.Component{
 
@@ -34,6 +44,7 @@ export class MainScreen extends React.Component{
         this.getChildState = this.getChildState.bind(this)
         this.setModalVisible = this.setModalVisible.bind(this)
         this.toggleSwitch = this.toggleSwitch.bind(this)
+        this.changeLanguage = this.changeLanguage.bind(this)
     }
 
     setModalVisible = (visible) => {
@@ -63,6 +74,12 @@ export class MainScreen extends React.Component{
 
     }
 
+    changeLanguage(data){
+        if(data){
+            this.props.changeLanguage(data)
+        }
+    }
+
     toggleSwitch(previousState){
         this.setState({isEnabled: previousState})
     }
@@ -84,10 +101,10 @@ export class MainScreen extends React.Component{
                                 <View style={{width: 200, height: 250, flexDirection:"column"}}>
                                     <View>
                                         <View style={{alignItems: "center"}}>
-                                            <Text style={{fontWeight: "bold", fontSize: 20}}>Настройки</Text>
+                                            <Text style={{fontWeight: "bold", fontSize: 20}}>{languages.getLanguage()[10]}</Text>
                                         </View>
                                         <View style={{flexDirection:"row", marginTop: 10, justifyContent: "space-between"}}>
-                                            <Text style={{fontWeight: "bold", fontSize: 20, color: "grey"}}>Темная тема: </Text>
+                                            <Text style={{fontWeight: "bold", fontSize: 20, color: "grey"}}>{languages.getLanguage()[11]}</Text>
                                             <Switch
                                                 trackColor={{ false: "#767577", true: "#81b0ff" }}
                                                 thumbColor={this.state.isEnabled ? "#f5dd4b" : "#f4f3f4"}
@@ -98,23 +115,38 @@ export class MainScreen extends React.Component{
                                         </View>
                                         <View style={{flexDirection: "column", marginTop: 10}}>
                                             <View style={{justifyContent: "center"}}>
-                                                <Text style={{fontSize: 20, fontWeight: "bold", color: "grey"}}>Язык интерфейса: </Text>
+                                                <Text style={{fontSize: 20, fontWeight: "bold", color: "grey"}}>{languages.getLanguage()[12]}</Text>
                                             </View>
 
                                             <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 10}}>
-                                                <TouchableOpacity onPress={() => console.log('press')}>
+                                                <TouchableOpacity onPress={() => {
+                                                    storeData("ukr")
+                                                    languages.setLanguage().then(res=>{
+                                                        this.changeLanguage(res)
+                                                    })
+                                                }}>
                                                     <Image
                                                         style={{width: 50, height: 50}}
                                                         source={require('../../img/ukr.png')}
                                                     />
                                                 </TouchableOpacity>
-                                                <TouchableOpacity onPress={() => console.log('press')}>
+                                                <TouchableOpacity onPress={() => {
+                                                    storeData("eng")
+                                                    languages.setLanguage().then(res=>{
+                                                        this.changeLanguage(res)
+                                                    })
+                                                }}>
                                                     <Image
                                                         style={{width: 50, height: 50}}
                                                         source={require('../../img/eng.png')}
                                                     />
                                                 </TouchableOpacity>
-                                                <TouchableOpacity onPress={() => console.log('press')}>
+                                                <TouchableOpacity onPress={() => {
+                                                    storeData("rus")
+                                                    languages.setLanguage().then(res=>{
+                                                        this.changeLanguage(res)
+                                                    })
+                                                }}>
                                                     <Image
                                                         style={{width: 50, height: 50}}
                                                         source={require('../../img/rus.png')}
@@ -129,7 +161,7 @@ export class MainScreen extends React.Component{
                                                 this.setModalVisible(!this.state.modalVisible);
                                             }}
                                         >
-                                            <Text style={{fontSize: 16, fontWeight: "bold", color:"#fff"}}>Отключить рекламу</Text>
+                                            <Text style={{fontSize: 16, fontWeight: "bold", color:"#fff"}}>{languages.getLanguage()[13]}</Text>
                                         </TouchableOpacity>
                                             <TouchableHighlight
                                                 style={{ backgroundColor: "#2196F3", height: 40, marginTop: 10, alignItems: "center", justifyContent: "center"}}
@@ -137,7 +169,7 @@ export class MainScreen extends React.Component{
                                                     this.setModalVisible(!this.state.modalVisible);
                                                 }}
                                             >
-                                        <Text style={{fontSize: 16, fontWeight: "bold", color:"#fff"}}>Закрыть</Text>
+                                        <Text style={{fontSize: 16, fontWeight: "bold", color:"#fff"}}>{languages.getLanguage()[14]}</Text>
                                     </TouchableHighlight>
 
                                 </View>
@@ -166,7 +198,7 @@ export class MainScreen extends React.Component{
 
                         <View style={{backgroundColor: '#efefef', justifyContent:"center"}}>
                             <Text style={{alignSelf: "center",fontWeight: "bold", color:"grey"}}>
-                                Всего найдено: {(this.state.list2.length === 0) ? this.state.list.length : this.state.list2.length}
+                                 {languages.getLanguage()[9]} {(this.state.list2.length === 0) ? this.state.list.length : this.state.list2.length}
                             </Text>
                         </View>
 
@@ -265,18 +297,3 @@ const styles = StyleSheet.create({
         textAlign: "center"
     }
 });
-/*
-   searchInList(value){
-        this.setState({loaded: false, list2: []})
-
-        let temp = []
-        let regExp = new RegExp(value)
-        for(let i = 0; i < this.state.list.length; i++){
-            if(this.state.list[i].title.match(regExp) || this.state.list[i].location.match(regExp)){
-                temp.push(this.state.list[i])
-            }
-        }
-        this.setState({loaded: true, list2: temp})
-
-    }
- */

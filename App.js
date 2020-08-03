@@ -3,6 +3,7 @@ import { Button, DrawerLayoutAndroid, Text, View, TextInput } from "react-native
 import DatePicker from "react-native-datepicker"
 import {Slider} from "react-native-elements";
 import {MainScreen} from "./src/screens/MainScreen";
+import language from "./src/configs/lang-config";
 
 class App extends React.Component {
     constructor(props) {
@@ -19,10 +20,14 @@ class App extends React.Component {
         this.currentDate = this.currentDate.bind(this)
         this.onChangeText1 = this.onChangeText1.bind(this)
         this.onChangeText2 = this.onChangeText2.bind(this)
+        this.changeLanguage = this.changeLanguage.bind(this)
     }
 
     componentDidMount() {
         this.MainScreen.current.updateView(this.state.date, this.state.duration, {min: this.state.min, max: this.state.max})
+        language.setLanguage().then(res => {
+            this.changeLanguage()
+        })
     }
 
     onChangeText1(text){
@@ -46,6 +51,10 @@ class App extends React.Component {
         return res
     }
 
+    changeLanguage(data){
+        this.forceUpdate()
+    }
+
     render() {
         const navigationView = (
             <View style={{
@@ -57,13 +66,13 @@ class App extends React.Component {
             }}>
                 <View>
                 <View style={{padding: 10, backgroundColor: '#0080ff'}}>
-                    <Text style={{color: '#fff'}}>Дата начала: </Text>
+                    <Text style={{color: '#fff'}}>{language.getLanguage()[0]}</Text>
                 </View>
                 <DatePicker
                     style={{width: 280, marginTop: 20}}
                     date={this.state.date}
                     mode="date"
-                    placeholder="выберите дату"
+                    placeholder={language.getLanguage()[1]}
                     format="DD.MM.YYYY"
                     minDate="01-05-2020"
                     maxDate="01-05-2040"
@@ -85,7 +94,7 @@ class App extends React.Component {
                 />
 
                 <View style={{padding:10, marginTop: 20, marginBottom: 10, backgroundColor: '#0080ff'}}>
-                    <Text style={{color: '#fff'}}>Продолжительность: </Text>
+                    <Text style={{color: '#fff'}}>{language.getLanguage()[2]}</Text>
                 </View>
                 <Slider
                     minimumValue={0}
@@ -95,13 +104,13 @@ class App extends React.Component {
                     value={this.state.duration}
                     onValueChange={value => this.setState({duration: value})}
                 />
-                <Text>Дней: {this.state.duration}</Text>
+                <Text>{language.getLanguage()[3] + this.state.duration}</Text>
 
                 <View style={{padding:10, marginTop: 20, marginBottom: 10, backgroundColor: '#0080ff'}}>
-                    <Text style={{color: '#fff'}}>Цена: </Text>
+                    <Text style={{color: '#fff'}}>{language.getLanguage()[4]}</Text>
                 </View>
                 <View style={{flexDirection: "row"}}>
-                    <Text style={{marginLeft: 10, marginTop: 8}}>от</Text>
+                    <Text style={{marginLeft: 10, marginTop: 8}}>{language.getLanguage()[5]}</Text>
                 <TextInput
                     style={{textAlign: "center", marginLeft:10, height: 40, width: 60, borderColor: 'gray', borderWidth: 1 }}
                     onChangeText={text => this.onChangeText1(text)}
@@ -109,7 +118,7 @@ class App extends React.Component {
                 />
                     <Text style={{marginLeft: 10, marginTop: 8}}>грн</Text>
 
-                <Text style={{marginLeft: 35, marginTop: 8}}>до</Text>
+                <Text style={{marginLeft: 35, marginTop: 8}}>{language.getLanguage()[6]}</Text>
                 <TextInput
                     style={{textAlign: "center", marginLeft: 10, height: 40, width: 60, borderColor: 'gray', borderWidth: 1 }}
                     onChangeText={text => this.onChangeText2(text)}
@@ -120,7 +129,7 @@ class App extends React.Component {
 
                 <View style={{marginTop: 10}}>
                 <Button
-                    title="Применить"
+                    title={language.getLanguage()[7]}
                     onPress={()=>{
                         this.refs['Drawer'].closeDrawer()
                         this.MainScreen.current.updateView(this.state.date, this.state.duration, {min: this.state.min, max: this.state.max})
@@ -130,7 +139,7 @@ class App extends React.Component {
                 </View>
                     <View style={{marginTop: 10}}>
                         <Button
-                            title="Сбросить фильтры"
+                            title={language.getLanguage()[8]}
                             onPress={()=>{
                                 this.setState({date: '', duration: 0, min: '', max: ''})
                             }}
@@ -158,7 +167,7 @@ class App extends React.Component {
                 drawerPosition={'left'}
                 renderNavigationView={() => navigationView}
             >
-                <MainScreen ref={this.MainScreen} openDrawer={() => this.refs['Drawer'].openDrawer()} />
+                <MainScreen ref={this.MainScreen} openDrawer={() => this.refs['Drawer'].openDrawer()} changeLanguage={this.changeLanguage} />
             </DrawerLayoutAndroid>
         );
     }

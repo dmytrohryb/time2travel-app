@@ -10,6 +10,10 @@ target 'time2travel' do
 
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
 
+  pod 'react-native-restart', :path => '../node_modules/react-native-restart'
+
+  pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
+
   target 'time2travelTests' do
     inherit! :complete
     # Pods for testing
