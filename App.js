@@ -4,6 +4,7 @@ import DatePicker from "react-native-datepicker"
 import {Slider} from "react-native-elements";
 import {MainScreen} from "./src/screens/MainScreen";
 import language from "./src/configs/lang-config";
+import style from "./src/configs/style-config"
 
 class App extends React.Component {
     constructor(props) {
@@ -21,12 +22,16 @@ class App extends React.Component {
         this.onChangeText1 = this.onChangeText1.bind(this)
         this.onChangeText2 = this.onChangeText2.bind(this)
         this.changeLanguage = this.changeLanguage.bind(this)
+        this.changeStyle = this.changeStyle.bind(this)
     }
 
     componentDidMount() {
         this.MainScreen.current.updateView(this.state.date, this.state.duration, {min: this.state.min, max: this.state.max})
         language.setLanguage().then(res => {
             this.changeLanguage()
+        })
+        style.setStyle().then(res => {
+            this.changeStyle()
         })
     }
 
@@ -55,90 +60,96 @@ class App extends React.Component {
         this.forceUpdate()
     }
 
+    changeStyle(){
+        this.forceUpdate()
+    }
+
     render() {
         const navigationView = (
             <View style={{
                 flex: 1,
                 paddingTop: 35,
-                backgroundColor: "#fff",
+                backgroundColor: style.getStyle().background,
                 padding: 8,
                 justifyContent: "space-between"
             }}>
                 <View>
-                <View style={{padding: 10, backgroundColor: '#0080ff'}}>
-                    <Text style={{color: '#fff'}}>{language.getLanguage()[0]}</Text>
-                </View>
-                <DatePicker
-                    style={{width: 280, marginTop: 20}}
-                    date={this.state.date}
-                    mode="date"
-                    placeholder={language.getLanguage()[1]}
-                    format="DD.MM.YYYY"
-                    minDate="01-05-2020"
-                    maxDate="01-05-2040"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0
-                        },
-                        dateInput: {
-                            marginLeft: 36
-                        }
-                        // ... You can check the source to find the other keys.
-                    }}
-                    onDateChange={date => this.setState({date: date})}
-                />
+                    <View style={{padding: 10, backgroundColor: style.getStyle().label}}>
+                        <Text style={{color: '#fff'}}>{language.getLanguage()[0]}</Text>
+                    </View>
+                    <DatePicker
+                        style={{width: 280, marginTop: 20}}
+                        date={this.state.date}
+                        mode="date"
+                        placeholder={language.getLanguage()[1]}
+                        format="DD.MM.YYYY"
+                        minDate="01-05-2020"
+                        maxDate="01-05-2040"
+                        confirmBtnText="Confirm"
+                        cancelBtnText="Cancel"
+                        customStyles={{
+                            dateIcon: {
+                                position: 'absolute',
+                                left: 0,
+                                top: 4,
+                                marginLeft: 0
+                            },
+                            dateInput: {
+                                marginLeft: 36
+                            }
+                            // ... You can check the source to find the other keys.
+                        }}
+                        onDateChange={date => this.setState({date: date})}
+                    />
 
-                <View style={{padding:10, marginTop: 20, marginBottom: 10, backgroundColor: '#0080ff'}}>
-                    <Text style={{color: '#fff'}}>{language.getLanguage()[2]}</Text>
-                </View>
-                <Slider
-                    minimumValue={0}
-                    maximumValue={21}
-                    step={1}
-                    thumbTintColor='#0080ff'
-                    value={this.state.duration}
-                    onValueChange={value => this.setState({duration: value})}
-                />
-                <Text>{language.getLanguage()[3] + this.state.duration}</Text>
+                    <View style={{padding:10, marginTop: 20, marginBottom: 10, backgroundColor: style.getStyle().label}}>
+                        <Text style={{color: '#fff'}}>{language.getLanguage()[2]}</Text>
+                    </View>
+                    <Slider
+                        minimumValue={0}
+                        maximumValue={21}
+                        step={1}
+                        thumbTintColor='#0080ff'
+                        value={this.state.duration}
+                        onValueChange={value => this.setState({duration: value})}
+                    />
+                    <Text>{language.getLanguage()[3] + this.state.duration}</Text>
 
-                <View style={{padding:10, marginTop: 20, marginBottom: 10, backgroundColor: '#0080ff'}}>
-                    <Text style={{color: '#fff'}}>{language.getLanguage()[4]}</Text>
-                </View>
-                <View style={{flexDirection: "row"}}>
-                    <Text style={{marginLeft: 10, marginTop: 8}}>{language.getLanguage()[5]}</Text>
-                <TextInput
-                    style={{textAlign: "center", marginLeft:10, height: 40, width: 60, borderColor: 'gray', borderWidth: 1 }}
-                    onChangeText={text => this.onChangeText1(text)}
-                    value={this.state.min}
-                />
-                    <Text style={{marginLeft: 10, marginTop: 8}}>грн</Text>
+                    <View style={{padding:10, marginTop: 20, marginBottom: 10, backgroundColor: style.getStyle().label}}>
+                        <Text style={{color: '#fff'}}>{language.getLanguage()[4]}</Text>
+                    </View>
+                    <View style={{flexDirection: "row"}}>
+                        <Text style={{marginLeft: 10, marginTop: 8}}>{language.getLanguage()[5]}</Text>
+                        <TextInput
+                            style={{textAlign: "center", marginLeft:10, height: 40, width: 60, borderColor: 'gray', borderWidth: 1 }}
+                            onChangeText={text => this.onChangeText1(text)}
+                            value={this.state.min}
+                        />
+                        <Text style={{marginLeft: 10, marginTop: 8}}>грн</Text>
 
-                <Text style={{marginLeft: 35, marginTop: 8}}>{language.getLanguage()[6]}</Text>
-                <TextInput
-                    style={{textAlign: "center", marginLeft: 10, height: 40, width: 60, borderColor: 'gray', borderWidth: 1 }}
-                    onChangeText={text => this.onChangeText2(text)}
-                    value={this.state.max}
-                />
-                <Text style={{marginLeft: 10, marginTop: 8}}>грн</Text>
-                </View>
+                        <Text style={{marginLeft: 35, marginTop: 8}}>{language.getLanguage()[6]}</Text>
+                        <TextInput
+                            style={{textAlign: "center", marginLeft: 10, height: 40, width: 60, borderColor: 'gray', borderWidth: 1 }}
+                            onChangeText={text => this.onChangeText2(text)}
+                            value={this.state.max}
+                        />
+                        <Text style={{marginLeft: 10, marginTop: 8}}>грн</Text>
+                    </View>
 
-                <View style={{marginTop: 10}}>
-                <Button
-                    title={language.getLanguage()[7]}
-                    onPress={()=>{
-                        this.refs['Drawer'].closeDrawer()
-                        this.MainScreen.current.updateView(this.state.date, this.state.duration, {min: this.state.min, max: this.state.max})
-
-                    }}
-                />
-                </View>
                     <View style={{marginTop: 10}}>
                         <Button
+                            color={style.getStyle().button}
+                            title={language.getLanguage()[7]}
+                            onPress={()=>{
+                                this.refs['Drawer'].closeDrawer()
+                                this.MainScreen.current.updateView(this.state.date, this.state.duration, {min: this.state.min, max: this.state.max})
+
+                            }}
+                        />
+                    </View>
+                    <View style={{marginTop: 10}}>
+                        <Button
+                            color={style.getStyle().button}
                             title={language.getLanguage()[8]}
                             onPress={()=>{
                                 this.setState({date: '', duration: 0, min: '', max: ''})
@@ -149,6 +160,7 @@ class App extends React.Component {
                 </View>
                 <View>
                     <Button
+                        color={style.getStyle().button}
                         title="About me"
                         onPress={()=>{
 
@@ -167,7 +179,7 @@ class App extends React.Component {
                 drawerPosition={'left'}
                 renderNavigationView={() => navigationView}
             >
-                <MainScreen ref={this.MainScreen} openDrawer={() => this.refs['Drawer'].openDrawer()} changeLanguage={this.changeLanguage} />
+                <MainScreen ref={this.MainScreen} openDrawer={() => this.refs['Drawer'].openDrawer()} changeLanguage={this.changeLanguage} changeStyle={this.changeStyle} />
             </DrawerLayoutAndroid>
         );
     }

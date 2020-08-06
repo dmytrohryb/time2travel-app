@@ -853,6 +853,25 @@ export interface LayoutChangeEvent {
     };
 }
 
+interface TextLayoutLine {
+    ascender: number;
+    capHeight: number;
+    descender: number;
+    height: number;
+    text: string;
+    width: number;
+    x: number;
+    xHeight: number;
+    y: number;
+}
+
+/**
+ * @see TextProps.onTextLayout
+ */
+export interface TextLayoutEventData extends TargetedEvent {
+    lines: TextLayoutLine[];
+}
+
 export type FontVariant = 'small-caps' | 'oldstyle-nums' | 'lining-nums' | 'tabular-nums' | 'proportional-nums';
 export interface TextStyleIOS extends ViewStyle {
     fontVariant?: FontVariant[];
@@ -976,6 +995,11 @@ export interface TextProps extends TextPropsIOS, TextPropsAndroid, Accessibility
      * {nativeEvent: { layout: {x, y, width, height}}}.
      */
     onLayout?: (event: LayoutChangeEvent) => void;
+
+    /**
+     * Invoked on Text layout
+     */
+    onTextLayout?: (event: NativeSyntheticEvent<TextLayoutEventData>) => void;
 
     /**
      * This function is called on press.
@@ -8594,8 +8618,6 @@ declare const _View: typeof View;
 declare const _Image: typeof Image;
 declare const _Text: typeof Text;
 declare const _ScrollView: typeof ScrollView;
-declare const _FlatList: typeof FlatList;
-declare const _SectionList: typeof SectionList;
 export namespace Animated {
     type AnimatedValue = Value;
     type AnimatedValueXY = ValueXY;
@@ -8941,21 +8963,36 @@ export namespace Animated {
 
     export type LegacyRef<C> = { getNode(): C };
 
-    export interface WithAnimatedValue<T>
-        extends ThisType<
-            T extends object
-                ? { [K in keyof T]?: WithAnimatedValue<T[K]> }
-                : T extends (infer P)[]
-                ? WithAnimatedValue<P>[]
-                : T | Value | AnimatedInterpolation
-        > {}
+    type Nullable = undefined | null;
+    type Primitive = string | number | boolean | symbol;
+    type Builtin = Function | Date | Error | RegExp;
 
-    export type AnimatedProps<T> = { [key in keyof T]: WithAnimatedValue<T[key]> } &
-        (T extends {
-            ref?: React.Ref<infer R>;
-        }
-            ? { ref?: React.Ref<R | { getNode(): R }> }
-            : {});
+    interface WithAnimatedArray<P> extends Array<WithAnimatedValue<P>> {}
+    type WithAnimatedObject<T> = {
+        [K in keyof T]: WithAnimatedValue<T[K]>;
+    };
+
+    export type WithAnimatedValue<T> = T extends Builtin | Nullable
+        ? T
+        : T extends Primitive
+        ? T | Value | AnimatedInterpolation // add `Value` and `AnimatedInterpolation` but also preserve original T
+        : T extends Array<infer P>
+        ? WithAnimatedArray<P>
+        : T extends {}
+        ? WithAnimatedObject<T>
+        : T; // in case it's something we don't yet know about (for .e.g bigint)
+
+    type NonAnimatedProps = 'key' | 'ref';
+
+    export type AnimatedProps<T> =
+        | {
+              [key in keyof T]: key extends NonAnimatedProps ? T[key] : WithAnimatedValue<T[key]>;
+          }
+        | (T extends {
+              ref?: React.Ref<infer R>;
+          }
+              ? { ref?: React.Ref<LegacyRef<R>> }
+              : {});
 
     export interface AnimatedComponent<T extends React.ComponentType<any>>
         extends React.FC<AnimatedProps<React.ComponentPropsWithRef<T>>> {}
@@ -8973,8 +9010,12 @@ export namespace Animated {
     export const Image: AnimatedComponent<typeof _Image>;
     export const Text: AnimatedComponent<typeof _Text>;
     export const ScrollView: AnimatedComponent<typeof _ScrollView>;
-    export const FlatList: AnimatedComponent<typeof _FlatList>;
-    export const SectionList: AnimatedComponent<typeof _SectionList>;
+
+    /**
+     * FlatList and SectionList infer generic Type defined under their `data` and `section` props.
+     */
+    export class FlatList<ItemT = any> extends React.Component<AnimatedProps<FlatListProps<ItemT>>> {}
+    export class SectionList<SectionT = any> extends React.Component<AnimatedProps<SectionListProps<SectionT>>> {}
 }
 
 // tslint:disable-next-line:interface-name

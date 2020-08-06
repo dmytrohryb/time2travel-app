@@ -15,15 +15,24 @@ import {Header} from "react-native-elements"
 import axios from 'axios'
 import {ListPreview} from "../components/ListPreview"
 const shuffle = require('../components/KnuthShuffle').knuthShuffle
-import {IconButton, ActivityIndicator, Colors} from "react-native-paper"
+import {IconButton, ActivityIndicator, Colors, Searchbar} from "react-native-paper"
 import languages from "../configs/lang-config"
 import AsyncStorage from '@react-native-community/async-storage'
+import style from "../configs/style-config"
 
 const storeData = async (value) => {
     try {
         await AsyncStorage.setItem('lang', value)
     } catch (e) {
         // saving error
+    }
+}
+
+const addStoreStyle = async  (value) => {
+    try{
+        await AsyncStorage.setItem('style', value)
+    }catch (e){
+
     }
 }
 
@@ -58,8 +67,6 @@ export class MainScreen extends React.Component{
             date, duration, cost
         })
             .then(res => {
-
-
                 this.setState({loaded: true, list: shuffle(res.data)})
 
             })
@@ -82,7 +89,16 @@ export class MainScreen extends React.Component{
 
     toggleSwitch(previousState){
         this.setState({isEnabled: previousState})
+        if(!this.state.isEnabled){
+            addStoreStyle('dark')
+        }else{
+            addStoreStyle('light')
+        }
+        style.setStyle().then(res=>{
+            this.props.changeStyle()
+        })
     }
+
 
     render() {
         let backBtn
@@ -177,6 +193,7 @@ export class MainScreen extends React.Component{
                         </View>
                     </Modal>
                     <Header
+
                         leftComponent={
                             <IconButton
                                 icon="menu"
@@ -195,12 +212,14 @@ export class MainScreen extends React.Component{
                             />
                         }
                     />
-
+                    <Searchbar></Searchbar>
                         <View style={{backgroundColor: '#efefef', justifyContent:"center"}}>
                             <Text style={{alignSelf: "center",fontWeight: "bold", color:"grey"}}>
                                  {languages.getLanguage()[9]} {(this.state.list2.length === 0) ? this.state.list.length : this.state.list2.length}
                             </Text>
                         </View>
+
+
 
                         <ScrollView style={{marginBottom: 35}}>
                             <ListPreview ref={this.ListPreview} stateUp={this.getChildState} list={(this.state.list2.length === 0) ? this.state.list : this.state.list2} />

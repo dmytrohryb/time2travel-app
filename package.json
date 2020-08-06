@@ -1,5 +1,5 @@
 {
-  "name": "time2travel",
+  "name": "test",
   "version": "0.0.1",
   "private": true,
   "scripts": {
@@ -13,26 +13,21 @@
     "@react-native-community/async-storage": "^1.11.0",
     "axios": "^0.19.2",
     "react": "16.13.1",
-    "react-native": "0.63.1",
-    "react-native-animated-loader": "^0.0.8",
+    "react-native": "0.63.2",
     "react-native-cheerio": "^1.0.0-rc.4",
     "react-native-datepicker": "^1.7.2",
-    "react-native-elements": "^2.0.4",
-    "react-native-icon-button": "^1.0.0",
+    "react-native-elements": "^2.1.0",
     "react-native-paper": "^4.0.1",
-    "react-native-restart": "^0.0.17",
-    "react-native-search-bar": "^3.5.1",
-    "react-native-vector-icons": "^7.0.0",
-    "react-native-webview": "^10.3.2"
+    "react-native-vector-icons": "^7.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.10.5",
-    "@babel/runtime": "^7.10.5",
-    "@react-native-community/eslint-config": "^2.0.0",
-    "babel-jest": "^26.1.0",
-    "eslint": "^7.5.0",
-    "jest": "^26.1.0",
-    "metro-react-native-babel-preset": "^0.60.0",
+    "@babel/core": "^7.8.4",
+    "@babel/runtime": "^7.8.4",
+    "@react-native-community/eslint-config": "^1.1.0",
+    "babel-jest": "^25.1.0",
+    "eslint": "^6.5.1",
+    "jest": "^25.1.0",
+    "metro-react-native-babel-preset": "^0.59.0",
     "react-test-renderer": "16.13.1"
   },
   "jest": {

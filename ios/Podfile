@@ -3,18 +3,16 @@ require_relative '../node_modules/@react-native-community/cli-platform-ios/nativ
 
 platform :ios, '10.0'
 
-target 'time2travel' do
+target 'test' do
   config = use_native_modules!
 
   use_react_native!(:path => config["reactNativePath"])
 
-  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-
-  pod 'react-native-restart', :path => '../node_modules/react-native-restart'
-
   pod 'RNCAsyncStorage', :path => '../node_modules/@react-native-community/async-storage'
 
-  target 'time2travelTests' do
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  target 'testTests' do
     inherit! :complete
     # Pods for testing
   end
@@ -29,10 +27,10 @@ target 'time2travel' do
   end
 end
 
-target 'time2travel-tvOS' do
-  # Pods for time2travel-tvOS
+target 'test-tvOS' do
+  # Pods for test-tvOS
 
-  target 'time2travel-tvOSTests' do
+  target 'test-tvOSTests' do
     inherit! :search_paths
     # Pods for testing
   end
