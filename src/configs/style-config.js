@@ -3,14 +3,30 @@ import AsyncStorage from '@react-native-community/async-storage'
 module.exports = {
     style: "light",
     light:{
-        background: "#fff",
-        label: "#0080ff",
-        button: "#2296f3"
+        searchbar: "#fff",
+        backgroundSidebar: "#fff",
+        backgroundContent: "#fff",
+        label: "#9492c3",
+        button: "#a28ec2",
+        fontColor: "#385076",
+        fontColor2: "#fff",
+        underLine: "#b7b6c0",
+        header: "#807cc3",
+        blockNaideno: "#ded5ed",
+        pressAnim: "#9492c3"
     },
     dark:{
-        background: "#284066",
-        label: "#1f314f",
-        button: "#0d1f3d"
+        searchbar: "#463940",
+        backgroundSidebar: "#17212b",
+        backgroundContent: "#17212b",
+        label: "#2b5278",
+        button: "#463940",
+        fontColor: "#fff",
+        fontColor2: "#fff",
+        underLine: "#0e1621",
+        header: "#807cc3",
+        blockNaideno: "#fff",
+        pressAnim: "#9492c3"
     },
     getStyle: function () {
         switch (this.style) {

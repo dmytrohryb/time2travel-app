@@ -1,7 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableNativeFeedback, Linking} from "react-native";
 import languages from '../configs/lang-config'
-
+import style from '../configs/style-config'
 export class Preview extends React.Component {
     constructor(props) {
         super(props);
@@ -13,7 +13,7 @@ export class Preview extends React.Component {
     }
 
     randomHexColor() {
-        return "#2196F3"
+        return style.getStyle().pressAnim
         /*return "#000000".replace(/0/g, function () {
             return (~~(Math.random() * 16)).toString(16);
         });*/
@@ -37,33 +37,33 @@ export class Preview extends React.Component {
                 background={TouchableNativeFeedback.Ripple(this.state.rippleColor, this.state.rippleOverflow)}
             >
                 <View
-                    style={{marginLeft: 5, marginRight: 5, borderBottomWidth: 1, borderColor: 'lightblue', padding: 5}}>
+                    style={{borderBottomWidth: 1, borderBottomOpacity: 0.5, borderColor: style.getStyle().underLine, padding: 5}}>
                     <View style={{flexDirection: "column"}}>
 
                         <View><Text style={{
                             marginBottom: 5,
                             fontWeight: "bold",
-                            color: "grey",
+                            color: style.getStyle().fontColor,
                             fontSize: 16
                         }}>{this.props.title}</Text></View>
                         <View style={{flexDirection: "row"}}>
-                            <Text style={{color: 'grey', fontWeight: "bold"}}>{languages.getLanguage()[15]} </Text>
+                            <Text style={{color: style.getStyle().fontColor, fontWeight: "bold"}}>{languages.getLanguage()[15]} </Text>
                             <Text>{this.props.site}</Text>
                         </View>
                         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
 
                             <View style={{flexDirection: "row"}}>
-                                <Text style={{color: 'grey', fontWeight: "bold"}}>{languages.getLanguage()[16]} </Text>
+                                <Text style={{color: style.getStyle().fontColor, fontWeight: "bold"}}>{languages.getLanguage()[16]} </Text>
                                 <Text>{this.props.location}</Text>
                             </View>
                             <Text style={{fontWeight: "bold", color: "grey"}}>{this.props.price} грн</Text>
                         </View>
                         <View style={{flexDirection: "row"}}>
-                            <Text style={{color: 'grey', fontWeight: "bold"}}>{languages.getLanguage()[0]} </Text>
+                            <Text style={{color: style.getStyle().fontColor, fontWeight: "bold"}}>{languages.getLanguage()[0]} </Text>
                             <Text>{this.props.date}</Text>
                         </View>
                         <View style={{flexDirection: "row"}}>
-                            <Text style={{color: 'grey', fontWeight: "bold"}}>{languages.getLanguage()[2]} </Text>
+                            <Text style={{color: style.getStyle().fontColor, fontWeight: "bold"}}>{languages.getLanguage()[2]} </Text>
                             <Text>{this.props.duration} {dayText}</Text>
                         </View>
                     </View>

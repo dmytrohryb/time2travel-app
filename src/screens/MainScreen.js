@@ -15,7 +15,7 @@ import {Header} from "react-native-elements"
 import axios from 'axios'
 import {ListPreview} from "../components/ListPreview"
 const shuffle = require('../components/KnuthShuffle').knuthShuffle
-import {IconButton, ActivityIndicator, Colors, Searchbar} from "react-native-paper"
+import {IconButton, ActivityIndicator, Colors, Searchbar, Chip} from "react-native-paper"
 import languages from "../configs/lang-config"
 import AsyncStorage from '@react-native-community/async-storage'
 import style from "../configs/style-config"
@@ -46,7 +46,9 @@ export class MainScreen extends React.Component{
             currentScreen: 1,
             countScreens: 1,
             list2: [],
-            modalVisible: false
+            modalVisible: false,
+            excursion: false,
+            pohod: true
         }
         this.ListPreview = React.createRef()
         this.updateView = this.updateView.bind(this)
@@ -106,7 +108,7 @@ export class MainScreen extends React.Component{
 
         if(this.state.loaded){
             return(
-                <View style={{flex: 1}}>
+                <View style={{backgroundColor: style.getStyle().backgroundContent ,flex: 1}}>
                     <Modal
                         animationType="slide"
                         transparent={true}
@@ -172,7 +174,7 @@ export class MainScreen extends React.Component{
                                         </View>
                                     </View>
                                         <TouchableOpacity
-                                            style={{ backgroundColor: "#2196F3", height: 40, marginTop: 20, alignItems: "center", justifyContent: "center"}}
+                                            style={{ backgroundColor: style.getStyle().button, height: 40, marginTop: 20, alignItems: "center", justifyContent: "center"}}
                                             onPress={() => {
                                                 this.setModalVisible(!this.state.modalVisible);
                                             }}
@@ -180,7 +182,7 @@ export class MainScreen extends React.Component{
                                             <Text style={{fontSize: 16, fontWeight: "bold", color:"#fff"}}>{languages.getLanguage()[13]}</Text>
                                         </TouchableOpacity>
                                             <TouchableHighlight
-                                                style={{ backgroundColor: "#2196F3", height: 40, marginTop: 10, alignItems: "center", justifyContent: "center"}}
+                                                style={{ backgroundColor: style.getStyle().button, height: 40, marginTop: 10, alignItems: "center", justifyContent: "center"}}
                                                 onPress={() => {
                                                     this.setModalVisible(!this.state.modalVisible);
                                                 }}
@@ -193,7 +195,7 @@ export class MainScreen extends React.Component{
                         </View>
                     </Modal>
                     <Header
-
+                        backgroundColor={style.getStyle().header}
                         leftComponent={
                             <IconButton
                                 icon="menu"
@@ -212,14 +214,12 @@ export class MainScreen extends React.Component{
                             />
                         }
                     />
-                    <Searchbar></Searchbar>
-                        <View style={{backgroundColor: '#efefef', justifyContent:"center"}}>
-                            <Text style={{alignSelf: "center",fontWeight: "bold", color:"grey"}}>
+                    <Searchbar style={{backgroundColor: style.getStyle().searchbar}}></Searchbar>
+                        <View style={{backgroundColor: style.getStyle().blockNaideno, justifyContent:"center"}}>
+                            <Text style={{alignSelf: "center", fontWeight: "bold", color:"grey"}}>
                                  {languages.getLanguage()[9]} {(this.state.list2.length === 0) ? this.state.list.length : this.state.list2.length}
                             </Text>
                         </View>
-
-
 
                         <ScrollView style={{marginBottom: 35}}>
                             <ListPreview ref={this.ListPreview} stateUp={this.getChildState} list={(this.state.list2.length === 0) ? this.state.list : this.state.list2} />
@@ -232,13 +232,13 @@ export class MainScreen extends React.Component{
 
                         <View style={{backgroundColor: '#efefef', flexDirection: "row", position: 'absolute', bottom:0, justifyContent:"center", width:"100%"}}>
 
-                            <Button title={'        <<        '} disabled={backBtn} onPress={() => {
+                            <Button color={style.getStyle().button} title={'        <<        '} disabled={backBtn} onPress={() => {
                                 this.ListPreview.current.setScreen(this.state.currentScreen - 1)
                             }}/>
                             <View style={{margin: 7}}>
                                 <Text style={{fontWeight: "bold", color: 'grey'}}>{this.state.currentScreen} / {this.state.countScreens}</Text>
                             </View>
-                            <Button title={'        >>        '} disabled={nextBtn} onPress={() => {
+                            <Button color={style.getStyle().button} title={'        >>        '} disabled={nextBtn} onPress={() => {
                                 this.ListPreview.current.setScreen(this.state.currentScreen + 1)
                             }}/>
                         </View>

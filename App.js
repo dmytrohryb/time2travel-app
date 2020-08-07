@@ -69,13 +69,13 @@ class App extends React.Component {
             <View style={{
                 flex: 1,
                 paddingTop: 35,
-                backgroundColor: style.getStyle().background,
+                backgroundColor: style.getStyle().backgroundSidebar,
                 padding: 8,
                 justifyContent: "space-between"
             }}>
                 <View>
                     <View style={{padding: 10, backgroundColor: style.getStyle().label}}>
-                        <Text style={{color: '#fff'}}>{language.getLanguage()[0]}</Text>
+                        <Text style={{color: style.getStyle().fontColor2}}>{language.getLanguage()[0]}</Text>
                     </View>
                     <DatePicker
                         style={{width: 280, marginTop: 20}}
@@ -103,37 +103,37 @@ class App extends React.Component {
                     />
 
                     <View style={{padding:10, marginTop: 20, marginBottom: 10, backgroundColor: style.getStyle().label}}>
-                        <Text style={{color: '#fff'}}>{language.getLanguage()[2]}</Text>
+                        <Text style={{color: style.getStyle().fontColor2}}>{language.getLanguage()[2]}</Text>
                     </View>
                     <Slider
                         minimumValue={0}
                         maximumValue={21}
                         step={1}
-                        thumbTintColor='#0080ff'
+                        thumbTintColor={style.getStyle().button}
                         value={this.state.duration}
                         onValueChange={value => this.setState({duration: value})}
                     />
-                    <Text>{language.getLanguage()[3] + this.state.duration}</Text>
+                    <Text style={{color: style.getStyle().fontColor}}>{language.getLanguage()[3] + this.state.duration}</Text>
 
                     <View style={{padding:10, marginTop: 20, marginBottom: 10, backgroundColor: style.getStyle().label}}>
-                        <Text style={{color: '#fff'}}>{language.getLanguage()[4]}</Text>
+                        <Text style={{color: style.getStyle().fontColor2}}>{language.getLanguage()[4]}</Text>
                     </View>
                     <View style={{flexDirection: "row"}}>
-                        <Text style={{marginLeft: 10, marginTop: 8}}>{language.getLanguage()[5]}</Text>
+                        <Text style={{color: style.getStyle().fontColor ,marginLeft: 10, marginTop: 8}}>{language.getLanguage()[5]}</Text>
                         <TextInput
                             style={{textAlign: "center", marginLeft:10, height: 40, width: 60, borderColor: 'gray', borderWidth: 1 }}
                             onChangeText={text => this.onChangeText1(text)}
                             value={this.state.min}
                         />
-                        <Text style={{marginLeft: 10, marginTop: 8}}>грн</Text>
+                        <Text style={{color: style.getStyle().fontColor, marginLeft: 10, marginTop: 8}}>грн</Text>
 
-                        <Text style={{marginLeft: 35, marginTop: 8}}>{language.getLanguage()[6]}</Text>
+                        <Text style={{color: style.getStyle().fontColor, marginLeft: 35, marginTop: 8}}>{language.getLanguage()[6]}</Text>
                         <TextInput
                             style={{textAlign: "center", marginLeft: 10, height: 40, width: 60, borderColor: 'gray', borderWidth: 1 }}
                             onChangeText={text => this.onChangeText2(text)}
                             value={this.state.max}
                         />
-                        <Text style={{marginLeft: 10, marginTop: 8}}>грн</Text>
+                        <Text style={{color: style.getStyle().fontColor, marginLeft: 10, marginTop: 8}}>грн</Text>
                     </View>
 
                     <View style={{marginTop: 10}}>
