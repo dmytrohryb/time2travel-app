@@ -46,9 +46,7 @@ export class MainScreen extends React.Component{
             currentScreen: 1,
             countScreens: 1,
             list2: [],
-            modalVisible: false,
-            excursion: false,
-            pohod: true
+            modalVisible: false
         }
         this.ListPreview = React.createRef()
         this.updateView = this.updateView.bind(this)
@@ -89,13 +87,8 @@ export class MainScreen extends React.Component{
         }
     }
 
-    toggleSwitch(previousState){
-        this.setState({isEnabled: previousState})
-        if(!this.state.isEnabled){
-            addStoreStyle('dark')
-        }else{
-            addStoreStyle('light')
-        }
+    toggleSwitch(styl){
+        addStoreStyle(styl)
         style.setStyle().then(res=>{
             this.props.changeStyle()
         })
@@ -108,7 +101,7 @@ export class MainScreen extends React.Component{
 
         if(this.state.loaded){
             return(
-                <View style={{backgroundColor: style.getStyle().backgroundContent ,flex: 1}}>
+                <View style={{backgroundColor: style.getStyle().backgroundContent, flex: 1}}>
                     <Modal
                         animationType="slide"
                         transparent={true}
@@ -116,21 +109,41 @@ export class MainScreen extends React.Component{
                     >
                         <View style={styles.centeredView}>
                             <View style={styles.modalView}>
-                                <View style={{width: 200, height: 250, flexDirection:"column"}}>
+                                <View style={{width: 200, height: 300, flexDirection:"column"}}>
                                     <View>
                                         <View style={{alignItems: "center"}}>
                                             <Text style={{fontWeight: "bold", fontSize: 20}}>{languages.getLanguage()[10]}</Text>
                                         </View>
-                                        <View style={{flexDirection:"row", marginTop: 10, justifyContent: "space-between"}}>
+
                                             <Text style={{fontWeight: "bold", fontSize: 20, color: "grey"}}>{languages.getLanguage()[11]}</Text>
-                                            <Switch
-                                                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                                                thumbColor={this.state.isEnabled ? "#f5dd4b" : "#f4f3f4"}
-                                                ios_backgroundColor="#3e3e3e"
-                                                onValueChange={this.toggleSwitch}
-                                                value={this.state.isEnabled}
-                                            />
-                                        </View>
+                                            <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 10}}>
+                                                <TouchableOpacity onPress={() => {
+                                                    this.toggleSwitch("light")
+
+                                                }}>
+                                                    <Image
+                                                        style={{width: 50, height: 50}}
+                                                        source={require('../../img/1.png')}
+                                                    />
+                                                </TouchableOpacity>
+                                                <TouchableOpacity onPress={() => {
+                                                    this.toggleSwitch("dark")
+
+                                                }}>
+                                                    <Image
+                                                        style={{width: 50, height: 50}}
+                                                        source={require('../../img/2.png')}
+                                                    />
+                                                </TouchableOpacity>
+                                                <TouchableOpacity onPress={() => {
+                                                    this.toggleSwitch("red")
+                                                }}>
+                                                    <Image
+                                                        style={{width: 50, height: 50}}
+                                                        source={require('../../img/3.png')}
+                                                    />
+                                                </TouchableOpacity>
+                                            </View>
                                         <View style={{flexDirection: "column", marginTop: 10}}>
                                             <View style={{justifyContent: "center"}}>
                                                 <Text style={{fontSize: 20, fontWeight: "bold", color: "grey"}}>{languages.getLanguage()[12]}</Text>
@@ -248,7 +261,93 @@ export class MainScreen extends React.Component{
         }else{
             return(
                 <View>
+                    <Modal
+                        animationType="slide"
+                        transparent={true}
+                        visible={this.state.modalVisible}
+                    >
+                        <View style={styles.centeredView}>
+                            <View style={styles.modalView}>
+                                <View style={{width: 200, height: 250, flexDirection:"column"}}>
+                                    <View>
+                                        <View style={{alignItems: "center"}}>
+                                            <Text style={{fontWeight: "bold", fontSize: 20}}>{languages.getLanguage()[10]}</Text>
+                                        </View>
+                                        <View style={{flexDirection:"row", marginTop: 10, justifyContent: "space-between"}}>
+                                            <Text style={{fontWeight: "bold", fontSize: 20, color: "grey"}}>{languages.getLanguage()[11]}</Text>
+                                            <Switch
+                                                trackColor={{ false: "#767577", true: "#81b0ff" }}
+                                                thumbColor={this.state.isEnabled ? "#f5dd4b" : "#f4f3f4"}
+                                                ios_backgroundColor="#3e3e3e"
+                                                onValueChange={this.toggleSwitch}
+                                                value={this.state.isEnabled}
+                                            />
+                                        </View>
+                                        <View style={{flexDirection: "column", marginTop: 10}}>
+                                            <View style={{justifyContent: "center"}}>
+                                                <Text style={{fontSize: 20, fontWeight: "bold", color: "grey"}}>{languages.getLanguage()[12]}</Text>
+                                            </View>
+
+                                            <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 10}}>
+                                                <TouchableOpacity onPress={() => {
+                                                    storeData("ukr")
+                                                    languages.setLanguage().then(res=>{
+                                                        this.changeLanguage(res)
+                                                    })
+                                                }}>
+                                                    <Image
+                                                        style={{width: 50, height: 50}}
+                                                        source={require('../../img/ukr.png')}
+                                                    />
+                                                </TouchableOpacity>
+                                                <TouchableOpacity onPress={() => {
+                                                    storeData("eng")
+                                                    languages.setLanguage().then(res=>{
+                                                        this.changeLanguage(res)
+                                                    })
+                                                }}>
+                                                    <Image
+                                                        style={{width: 50, height: 50}}
+                                                        source={require('../../img/eng.png')}
+                                                    />
+                                                </TouchableOpacity>
+                                                <TouchableOpacity onPress={() => {
+                                                    storeData("rus")
+                                                    languages.setLanguage().then(res=>{
+                                                        this.changeLanguage(res)
+                                                    })
+                                                }}>
+                                                    <Image
+                                                        style={{width: 50, height: 50}}
+                                                        source={require('../../img/rus.png')}
+                                                    />
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                    </View>
+                                    <TouchableOpacity
+                                        style={{ backgroundColor: style.getStyle().button, height: 40, marginTop: 20, alignItems: "center", justifyContent: "center"}}
+                                        onPress={() => {
+                                            this.setModalVisible(!this.state.modalVisible);
+                                        }}
+                                    >
+                                        <Text style={{fontSize: 16, fontWeight: "bold", color:"#fff"}}>{languages.getLanguage()[13]}</Text>
+                                    </TouchableOpacity>
+                                    <TouchableHighlight
+                                        style={{ backgroundColor: style.getStyle().button, height: 40, marginTop: 10, alignItems: "center", justifyContent: "center"}}
+                                        onPress={() => {
+                                            this.setModalVisible(!this.state.modalVisible);
+                                        }}
+                                    >
+                                        <Text style={{fontSize: 16, fontWeight: "bold", color:"#fff"}}>{languages.getLanguage()[14]}</Text>
+                                    </TouchableHighlight>
+
+                                </View>
+                            </View>
+                        </View>
+                    </Modal>
                     <Header
+                        backgroundColor={style.getStyle().header}
                         leftComponent={
                             <IconButton
                                 icon="menu"
@@ -269,7 +368,7 @@ export class MainScreen extends React.Component{
                     />
 
                         <View style={{alignItems: "center", justifyContent: "center", height: "85%"}}>
-                            <ActivityIndicator animating={true} color={Colors.blue300} size="large" />
+                            <ActivityIndicator animating={true} color={style.getStyle().button} size="large" />
                         </View>
 
                 </View>

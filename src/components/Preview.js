@@ -2,6 +2,7 @@ import React from 'react';
 import {View, Text, TouchableNativeFeedback, Linking} from "react-native";
 import languages from '../configs/lang-config'
 import style from '../configs/style-config'
+
 export class Preview extends React.Component {
     constructor(props) {
         super(props);
@@ -10,6 +11,10 @@ export class Preview extends React.Component {
             rippleOverflow: false
         }
         this.randomHexColor = this.randomHexColor.bind(this)
+    }
+
+    componentWillUnmount(){
+        this.setState({rippleColor: this.randomHexColor()})
     }
 
     randomHexColor() {
@@ -34,10 +39,10 @@ export class Preview extends React.Component {
                     this.setState({rippleColor: this.randomHexColor(), rippleOverflow: this.state.rippleOverflow})
                     Linking.openURL(this.props.link)
                 }}
-                background={TouchableNativeFeedback.Ripple(this.state.rippleColor, this.state.rippleOverflow)}
+                background={TouchableNativeFeedback.Ripple(this.randomHexColor(), this.state.rippleOverflow)}
             >
                 <View
-                    style={{borderBottomWidth: 1, borderBottomOpacity: 0.5, borderColor: style.getStyle().underLine, padding: 5}}>
+                    style={{borderBottomWidth: 1, borderColor: style.getStyle().underLine, padding: 5}}>
                     <View style={{flexDirection: "column"}}>
 
                         <View><Text style={{

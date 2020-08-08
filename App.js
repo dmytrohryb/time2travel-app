@@ -109,7 +109,7 @@ class App extends React.Component {
                         minimumValue={0}
                         maximumValue={21}
                         step={1}
-                        thumbTintColor={style.getStyle().button}
+                        thumbTintColor= {style.getStyle().button}
                         value={this.state.duration}
                         onValueChange={value => this.setState({duration: value})}
                     />
@@ -161,7 +161,7 @@ class App extends React.Component {
                 <View>
                     <Button
                         color={style.getStyle().button}
-                        title="About me"
+                        title={language.getLanguage()[17]}
                         onPress={()=>{
 
                         }}
