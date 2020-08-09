@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, DrawerLayoutAndroid, Text, View, TextInput } from "react-native";
+import {RadioButton} from "react-native-paper"
 import DatePicker from "react-native-datepicker"
 import {Slider} from "react-native-elements";
 import {MainScreen} from "./src/screens/MainScreen";
@@ -14,7 +15,8 @@ class App extends React.Component {
             date: '',
             duration: 0,
             min: '',
-            max: ''
+            max: '',
+            checked: "first"
         }
 
         this.MainScreen = React.createRef()
@@ -78,7 +80,7 @@ class App extends React.Component {
                         <Text style={{color: style.getStyle().fontColor2}}>{language.getLanguage()[0]}</Text>
                     </View>
                     <DatePicker
-                        style={{width: 280, marginTop: 20}}
+                        style={{width: 280, marginTop: 10}}
                         date={this.state.date}
                         mode="date"
                         placeholder={language.getLanguage()[1]}
@@ -102,7 +104,7 @@ class App extends React.Component {
                         onDateChange={date => this.setState({date: date})}
                     />
 
-                    <View style={{padding:10, marginTop: 20, marginBottom: 10, backgroundColor: style.getStyle().label}}>
+                    <View style={{padding:10, marginTop: 10, marginBottom: 10, backgroundColor: style.getStyle().label}}>
                         <Text style={{color: style.getStyle().fontColor2}}>{language.getLanguage()[2]}</Text>
                     </View>
                     <Slider
@@ -115,7 +117,7 @@ class App extends React.Component {
                     />
                     <Text style={{color: style.getStyle().fontColor}}>{language.getLanguage()[3] + this.state.duration}</Text>
 
-                    <View style={{padding:10, marginTop: 20, marginBottom: 10, backgroundColor: style.getStyle().label}}>
+                    <View style={{padding:10, marginTop: 10, marginBottom: 10, backgroundColor: style.getStyle().label}}>
                         <Text style={{color: style.getStyle().fontColor2}}>{language.getLanguage()[4]}</Text>
                     </View>
                     <View style={{flexDirection: "row"}}>
@@ -135,6 +137,13 @@ class App extends React.Component {
                         />
                         <Text style={{color: style.getStyle().fontColor, marginLeft: 10, marginTop: 8}}>грн</Text>
                     </View>
+                    <View style={{padding:10, marginTop: 10, marginBottom: 10, backgroundColor: style.getStyle().label}}>
+                        <Text style={{color: style.getStyle().fontColor2}}>{language.getLanguage()[20]}</Text>
+                    </View>
+                    <RadioButton.Group onValueChange={value => this.setState({checked: value})} value={this.state.checked}>
+                        <RadioButton.Item color={style.getStyle().button} label={language.getLanguage().[18]} value="first" />
+                        <RadioButton.Item color={style.getStyle().button} label={language.getLanguage().[19]} value="second" />
+                    </RadioButton.Group>
 
                     <View style={{marginTop: 10}}>
                         <Button
@@ -156,6 +165,7 @@ class App extends React.Component {
                             }}
                         />
                     </View>
+
 
                 </View>
                 <View>

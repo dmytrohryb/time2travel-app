@@ -20,7 +20,10 @@ module.exports = {
         "Закрити",
         "Організатор:",
         "Регіон:",
-        "Оцінити дотаток"
+        "Оцінити дотаток",
+        "Походи",
+        "Екскурсії",
+        "Тип:"
     ],
     rus:[
         "Дата начала:",
@@ -40,7 +43,10 @@ module.exports = {
         "Закрыть",
         "Организатор:",
         "Регион:",
-        "Оценить приложение"
+        "Оценить приложение",
+        "Походы",
+        "Экскурсии",
+        "Тип: "
     ],
     eng:[
         "Start date:",
@@ -60,7 +66,10 @@ module.exports = {
         "Close",
         "Company:",
         "Region:",
-        "Evaluate the application"
+        "Evaluate the application",
+        "Hiking",
+        "Excursions",
+        "Type: "
     ],
     default:[
         "           ",
