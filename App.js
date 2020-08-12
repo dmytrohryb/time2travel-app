@@ -137,13 +137,7 @@ class App extends React.Component {
                         />
                         <Text style={{color: style.getStyle().fontColor, marginLeft: 10, marginTop: 8}}>грн</Text>
                     </View>
-                    <View style={{padding:10, marginTop: 10, marginBottom: 10, backgroundColor: style.getStyle().label}}>
-                        <Text style={{color: style.getStyle().fontColor2}}>{language.getLanguage()[20]}</Text>
-                    </View>
-                    <RadioButton.Group onValueChange={value => this.setState({checked: value})} value={this.state.checked}>
-                        <RadioButton.Item color={style.getStyle().button} label={language.getLanguage().[18]} value="first" />
-                        <RadioButton.Item color={style.getStyle().button} label={language.getLanguage().[19]} value="second" />
-                    </RadioButton.Group>
+
 
                     <View style={{marginTop: 10}}>
                         <Button
@@ -152,7 +146,7 @@ class App extends React.Component {
                             onPress={()=>{
                                 this.refs['Drawer'].closeDrawer()
                                 this.MainScreen.current.updateView(this.state.date, this.state.duration, {min: this.state.min, max: this.state.max})
-
+                                this.MainScreen.current.resetSearch()
                             }}
                         />
                     </View>

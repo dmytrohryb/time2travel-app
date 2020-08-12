@@ -11,7 +11,7 @@ export class ListPreview extends React.Component{
             list: [],
             countScreens: Math.ceil(this.props.list.length / 15)
         }
-        this.props.stateUp(this.state.currentScreen, this.state.countScreens)
+       
         this.setScreen = this.setScreen.bind(this)
     }
 
@@ -26,8 +26,10 @@ export class ListPreview extends React.Component{
                 break
             }
         }
-        this.setState({list: tempData, countScreens: Math.ceil(this.props.list.length / 15)})
-        this.props.stateUp(this.state.currentScreen, this.state.countScreens)
+        this.setState({list: tempData, countScreens: Math.ceil(this.props.list.length / 15)}, () => {
+            this.props.stateUp(this.state.currentScreen, this.state.countScreens)
+        })
+
     }
 
     setScreen(screenNumber) {
@@ -48,14 +50,20 @@ export class ListPreview extends React.Component{
         }
 
         if (screenNumber > this.state.currentScreen) {
-            this.setState({list: tempData, currentScreen: this.state.currentScreen + 1, countScreens: Math.ceil(this.props.list.length / 15)})
-            this.props.stateUp(this.state.currentScreen + 1, this.state.countScreens)
+            this.setState({list: tempData, currentScreen: this.state.currentScreen + 1, countScreens: Math.ceil(this.props.list.length / 15)}, () => {
+                this.props.stateUp(this.state.currentScreen, this.state.countScreens)
+            })
+
         }else if(screenNumber === this.state.currentScreen){
-            this.setState({list: tempData, currentScreen: this.state.currentScreen, countScreens: Math.ceil(this.props.list.length / 15)})
-            this.props.stateUp(this.state.currentScreen, this.state.countScreens)
+            this.setState({list: tempData, currentScreen: this.state.currentScreen, countScreens: Math.ceil(this.props.list.length / 15)}, () => {
+                this.props.stateUp(this.state.currentScreen, this.state.countScreens)
+            })
+
         }else{
-            this.setState({list: tempData, currentScreen: this.state.currentScreen - 1, countScreens: Math.ceil(this.props.list.length / 15)})
-            this.props.stateUp(this.state.currentScreen - 1, this.state.countScreens)
+            this.setState({list: tempData, currentScreen: this.state.currentScreen - 1, countScreens: Math.ceil(this.props.list.length / 15)}, () => {
+                this.props.stateUp(this.state.currentScreen, this.state.countScreens)
+            })
+
         }
 
     }

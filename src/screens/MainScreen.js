@@ -46,7 +46,8 @@ export class MainScreen extends React.Component{
             currentScreen: 1,
             countScreens: 1,
             list2: [],
-            modalVisible: false
+            modalVisible: false,
+            search: ''
         }
         this.ListPreview = React.createRef()
         this.updateView = this.updateView.bind(this)
@@ -54,10 +55,16 @@ export class MainScreen extends React.Component{
         this.setModalVisible = this.setModalVisible.bind(this)
         this.toggleSwitch = this.toggleSwitch.bind(this)
         this.changeLanguage = this.changeLanguage.bind(this)
+        this.search = this.search.bind(this)
+        this.resetSearch = this.resetSearch.bind(this)
     }
 
     setModalVisible = (visible) => {
         this.setState({ modalVisible: visible });
+    }
+
+    resetSearch(){
+        this.setState({search: ''})
     }
 
     updateView(date, duration, cost){
@@ -85,6 +92,7 @@ export class MainScreen extends React.Component{
         if(data){
             this.props.changeLanguage(data)
         }
+
     }
 
     toggleSwitch(styl){
@@ -94,6 +102,22 @@ export class MainScreen extends React.Component{
         })
     }
 
+    search = (value) => {
+        let tempData = []
+        let count = 0
+
+
+
+        for(let i = 0; i < this.state.list.length; i++){
+            if(this.state.list[i].title.match(value) || this.state.list[i].location.match(value)){
+                tempData.push(this.state.list[i])
+            }
+        }
+
+        this.setState({list2: tempData, search: value}, () => {
+            this.ListPreview.current.setScreen(this.state.currentScreen)
+        })
+    }
 
     render() {
         let backBtn
@@ -227,15 +251,15 @@ export class MainScreen extends React.Component{
                             />
                         }
                     />
-                    <Searchbar style={{backgroundColor: style.getStyle().searchbar}}></Searchbar>
+                    <Searchbar style={{backgroundColor: style.getStyle().searchbar}} onChangeText={this.search}></Searchbar>
                         <View style={{backgroundColor: style.getStyle().blockNaideno, justifyContent:"center"}}>
                             <Text style={{alignSelf: "center", fontWeight: "bold", color:"grey"}}>
-                                 {languages.getLanguage()[9]} {(this.state.list2.length === 0) ? this.state.list.length : this.state.list2.length}
+                                 {languages.getLanguage()[9]} {(this.state.search === '') ? this.state.list.length : this.state.list2.length}
                             </Text>
                         </View>
 
                         <ScrollView style={{marginBottom: 35}}>
-                            <ListPreview ref={this.ListPreview} stateUp={this.getChildState} list={(this.state.list2.length === 0) ? this.state.list : this.state.list2} />
+                            <ListPreview ref={this.ListPreview} stateUp={this.getChildState} list={(this.state.search === '') ? this.state.list : this.state.list2} />
                         </ScrollView>
 
 
@@ -268,20 +292,40 @@ export class MainScreen extends React.Component{
                     >
                         <View style={styles.centeredView}>
                             <View style={styles.modalView}>
-                                <View style={{width: 200, height: 250, flexDirection:"column"}}>
+                                <View style={{width: 200, height: 300, flexDirection:"column"}}>
                                     <View>
                                         <View style={{alignItems: "center"}}>
                                             <Text style={{fontWeight: "bold", fontSize: 20}}>{languages.getLanguage()[10]}</Text>
                                         </View>
-                                        <View style={{flexDirection:"row", marginTop: 10, justifyContent: "space-between"}}>
-                                            <Text style={{fontWeight: "bold", fontSize: 20, color: "grey"}}>{languages.getLanguage()[11]}</Text>
-                                            <Switch
-                                                trackColor={{ false: "#767577", true: "#81b0ff" }}
-                                                thumbColor={this.state.isEnabled ? "#f5dd4b" : "#f4f3f4"}
-                                                ios_backgroundColor="#3e3e3e"
-                                                onValueChange={this.toggleSwitch}
-                                                value={this.state.isEnabled}
-                                            />
+
+                                        <Text style={{fontWeight: "bold", fontSize: 20, color: "grey"}}>{languages.getLanguage()[11]}</Text>
+                                        <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 10}}>
+                                            <TouchableOpacity onPress={() => {
+                                                this.toggleSwitch("light")
+
+                                            }}>
+                                                <Image
+                                                    style={{width: 50, height: 50}}
+                                                    source={require('../../img/1.png')}
+                                                />
+                                            </TouchableOpacity>
+                                            <TouchableOpacity onPress={() => {
+                                                this.toggleSwitch("dark")
+
+                                            }}>
+                                                <Image
+                                                    style={{width: 50, height: 50}}
+                                                    source={require('../../img/2.png')}
+                                                />
+                                            </TouchableOpacity>
+                                            <TouchableOpacity onPress={() => {
+                                                this.toggleSwitch("red")
+                                            }}>
+                                                <Image
+                                                    style={{width: 50, height: 50}}
+                                                    source={require('../../img/3.png')}
+                                                />
+                                            </TouchableOpacity>
                                         </View>
                                         <View style={{flexDirection: "column", marginTop: 10}}>
                                             <View style={{justifyContent: "center"}}>
