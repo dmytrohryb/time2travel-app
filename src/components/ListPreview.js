@@ -1,25 +1,24 @@
-import {Text, View} from "react-native";
-import {Preview} from "./Preview";
-import React from "react";
+import React from 'react';
+import {Preview} from './Preview';
+import {View, Text} from 'react-native';
 
-export class ListPreview extends React.Component{
+export class ListPreview extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             currentScreen: 1,
             list: [],
             countScreens: Math.ceil(this.props.list.length / 15)
         }
-       
+
         this.setScreen = this.setScreen.bind(this)
     }
 
+
     componentDidMount(){
-        let n = 15
         let tempData = []
 
-        for (let i = 0; i < n; i++) {
+        for (let i = 0; i < 15; i++) {
             if(this.props.list[i]){
                 tempData.push(this.props.list[i])
             }else{
@@ -63,18 +62,14 @@ export class ListPreview extends React.Component{
             this.setState({list: tempData, currentScreen: this.state.currentScreen - 1, countScreens: Math.ceil(this.props.list.length / 15)}, () => {
                 this.props.stateUp(this.state.currentScreen, this.state.countScreens)
             })
-
         }
-
     }
 
     render() {
-
         if (this.state.list.length !== 0){
             return(
                 <View>
                     <View>
-
                         {
                             this.state.list.map((l, i) => (
                                 <Preview

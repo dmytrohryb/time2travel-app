@@ -1,45 +1,42 @@
-import React from 'react';
-import {View, Text, TouchableNativeFeedback, Linking} from "react-native";
-import languages from '../configs/lang-config'
-import style from '../configs/style-config'
+import React from 'react'
+import {Linking, Text, TouchableNativeFeedback, View} from 'react-native';
+import style from '../configs/style-config';
+import languages from '../configs/lang-config';
 
 export class Preview extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            rippleColor: this.randomHexColor(),
+            rippleColor: this.hexColor(),
             rippleOverflow: false
         }
-        this.randomHexColor = this.randomHexColor.bind(this)
+        this.hexColor = this.hexColor.bind(this)
     }
 
     componentWillUnmount(){
-        this.setState({rippleColor: this.randomHexColor()})
+        this.setState({rippleColor: this.hexColor()})
     }
 
-    randomHexColor() {
+    hexColor() {
         return style.getStyle().pressAnim
-        /*return "#000000".replace(/0/g, function () {
-            return (~~(Math.random() * 16)).toString(16);
-        });*/
     }
 
     render() {
         let dayText = ''
         if (this.props.duration === 1) {
-            dayText = 'день'
+            dayText = languages.getLanguage()[21]
         } else if (this.props.duration > 1 && this.props.duration < 5) {
-            dayText = 'дня'
+            dayText = languages.getLanguage()[22]
         } else {
-            dayText = 'дней'
+            dayText = languages.getLanguage()[23]
         }
         let view = <>
             <TouchableNativeFeedback
                 onPress={() => {
-                    this.setState({rippleColor: this.randomHexColor(), rippleOverflow: this.state.rippleOverflow})
+                    this.setState({rippleColor: this.hexColor(), rippleOverflow: this.state.rippleOverflow})
                     Linking.openURL(this.props.link)
                 }}
-                background={TouchableNativeFeedback.Ripple(this.randomHexColor(), this.state.rippleOverflow)}
+                background={TouchableNativeFeedback.Ripple(this.hexColor(), this.state.rippleOverflow)}
             >
                 <View
                     style={{borderBottomWidth: 1, borderColor: style.getStyle().underLine, padding: 5}}>
@@ -61,7 +58,7 @@ export class Preview extends React.Component {
                                 <Text style={{color: style.getStyle().fontColor, fontWeight: "bold"}}>{languages.getLanguage()[16]} </Text>
                                 <Text>{this.props.location}</Text>
                             </View>
-                            <Text style={{fontWeight: "bold", color: "grey"}}>{this.props.price} грн</Text>
+                            <Text style={{fontWeight: "bold", color: "grey"}}>{this.props.price} {languages.getLanguage()[24]}</Text>
                         </View>
                         <View style={{flexDirection: "row"}}>
                             <Text style={{color: style.getStyle().fontColor, fontWeight: "bold"}}>{languages.getLanguage()[0]} </Text>
@@ -74,9 +71,7 @@ export class Preview extends React.Component {
                     </View>
                 </View>
             </TouchableNativeFeedback>
-
-
-        </>;
+            </>
         return view
     }
 }

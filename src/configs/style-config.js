@@ -2,7 +2,7 @@ import AsyncStorage from '@react-native-community/async-storage'
 
 module.exports = {
     style: "default",
-    light:{
+    blue:{
         searchbar: "#fff",
         backgroundSidebar: "#fff",
         backgroundContent: "#fff",
@@ -13,9 +13,10 @@ module.exports = {
         underLine: "#efecf4",
         header: "#807cc3",
         blockNaideno: "#ded5ed",
-        pressAnim: "#9492c3"
+        pressAnim: "#9492c3",
+        sortBar: "#e5dfee"
     },
-    dark:{
+    green:{
         searchbar: "#fff",
         backgroundSidebar: "#fff",
         backgroundContent: "#fff",
@@ -26,7 +27,8 @@ module.exports = {
         underLine: "#e9f4ea",
         header: "#83a244",
         blockNaideno: "#e2ebc8",
-        pressAnim: "#c7d697"
+        pressAnim: "#c7d697",
+        sortBar: "#e5dfee"
     },
     red:{
         searchbar: "#fff",
@@ -39,7 +41,8 @@ module.exports = {
         underLine: "#f1d0c8",
         header: "#e39d8d",
         blockNaideno: "#f1c1b6",
-        pressAnim: "#e39d8d"
+        pressAnim: "#e39d8d",
+        sortBar: "#e5dfee"
     },
     default:{
         searchbar: "#fff",
@@ -52,14 +55,15 @@ module.exports = {
         underLine: "#fff",
         header: "#fff",
         blockNaideno: "#fff",
-        pressAnim: "#fff"
+        pressAnim: "#fff",
+        sortBar: "#e5dfee"
     },
     getStyle: function () {
         switch (this.style) {
-            case "light":
-                return this.light
-            case "dark":
-                return this.dark
+            case "green":
+                return this.green
+            case "blue":
+                return this.blue
             case "red":
                 return this.red
             case "default":
@@ -73,7 +77,7 @@ module.exports = {
                 this.style = value
                 return true
             }else{
-                this.style = "light"
+                this.style = "blue"
                 return true
             }
         } catch(e) {

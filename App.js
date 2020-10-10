@@ -1,192 +1,89 @@
-import React from "react";
-import { Button, DrawerLayoutAndroid, Text, View, TextInput } from "react-native";
-import {RadioButton} from "react-native-paper"
-import DatePicker from "react-native-datepicker"
-import {Slider} from "react-native-elements";
-import {MainScreen} from "./src/screens/MainScreen";
-import language from "./src/configs/lang-config";
-import style from "./src/configs/style-config"
+import React from 'react'
+import {DrawerLayoutAndroid} from 'react-native';
+import {Header} from 'react-native-elements';
+import {MainScreen} from './src/screens/MainScreen';
+import {Sidebar} from './src/components/Sidebar';
+import languages from './src/configs/lang-config';
+import styles from './src/configs/style-config';
+import {displayName as appName} from './app.json';
+import {IconButton} from 'react-native-paper'
+import {Settings} from './src/components/Settings';
 
-class App extends React.Component {
-    constructor(props) {
-        super(props);
-
+export class App extends React.Component {
+    constructor() {
+        super();
         this.state = {
-            date: '',
-            duration: 0,
-            min: '',
-            max: '',
-            checked: "first"
+            data: []
         }
-
         this.MainScreen = React.createRef()
-        this.currentDate = this.currentDate.bind(this)
-        this.onChangeText1 = this.onChangeText1.bind(this)
-        this.onChangeText2 = this.onChangeText2.bind(this)
+        this.Sidebar = React.createRef()
+        this.Settings = React.createRef()
         this.changeLanguage = this.changeLanguage.bind(this)
-        this.changeStyle = this.changeStyle.bind(this)
+        this.changeTheme = this.changeTheme.bind(this)
+        this.openSidebar = this.openSidebar.bind(this)
+        this.closeSidebar = this.closeSidebar.bind(this)
+    }
+
+    changeLanguage(){
+        this.forceUpdate()
+    }
+
+    changeTheme(){
+        this.forceUpdate()
     }
 
     componentDidMount() {
-        this.MainScreen.current.updateView(this.state.date, this.state.duration, {min: this.state.min, max: this.state.max})
-        language.setLanguage().then(res => {
+        //this.MainScreen.current.updateView(this.state.date, this.state.duration, {min: this.state.min, max: this.state.max})
+        languages.setLanguage().then(res => {
             this.changeLanguage()
         })
-        style.setStyle().then(res => {
-            this.changeStyle()
+        styles.setStyle().then(res => {
+            this.changeTheme()
         })
     }
 
-    onChangeText1(text){
-        this.setState({min: text})
+    openSidebar(){
+        this.refs['Drawer'].openDrawer()
     }
 
-    onChangeText2(text){
-        this.setState({max: text})
-    }
-
-    currentDate(){
-        let currentDate = new Date()
-        let num = currentDate.getMonth() + 1
-        let currentMonth
-        if(num.toString().length === 1){
-            currentMonth = '0' + num
-        }else{
-            currentMonth = num
-        }
-        let res = (currentDate.getDate() + '.' + currentMonth + '.' + currentDate.getFullYear())
-        return res
-    }
-
-    changeLanguage(data){
-        this.forceUpdate()
-    }
-
-    changeStyle(){
-        this.forceUpdate()
+    closeSidebar(){
+        this.refs['Drawer'].closeDrawer()
     }
 
     render() {
-        const navigationView = (
-            <View style={{
-                flex: 1,
-                paddingTop: 35,
-                backgroundColor: style.getStyle().backgroundSidebar,
-                padding: 8,
-                justifyContent: "space-between"
-            }}>
-                <View>
-                    <View style={{padding: 10, backgroundColor: style.getStyle().label}}>
-                        <Text style={{color: style.getStyle().fontColor2}}>{language.getLanguage()[0]}</Text>
-                    </View>
-                    <DatePicker
-                        style={{width: 280, marginTop: 10}}
-                        date={this.state.date}
-                        mode="date"
-                        placeholder={language.getLanguage()[1]}
-                        format="DD.MM.YYYY"
-                        minDate="01-05-2020"
-                        maxDate="01-05-2040"
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        customStyles={{
-                            dateIcon: {
-                                position: 'absolute',
-                                left: 0,
-                                top: 4,
-                                marginLeft: 0
-                            },
-                            dateInput: {
-                                marginLeft: 36
-                            }
-                            // ... You can check the source to find the other keys.
-                        }}
-                        onDateChange={date => this.setState({date: date})}
-                    />
-
-                    <View style={{padding:10, marginTop: 10, marginBottom: 10, backgroundColor: style.getStyle().label}}>
-                        <Text style={{color: style.getStyle().fontColor2}}>{language.getLanguage()[2]}</Text>
-                    </View>
-                    <Slider
-                        minimumValue={0}
-                        maximumValue={21}
-                        step={1}
-                        thumbTintColor= {style.getStyle().button}
-                        value={this.state.duration}
-                        onValueChange={value => this.setState({duration: value})}
-                    />
-                    <Text style={{color: style.getStyle().fontColor}}>{language.getLanguage()[3] + this.state.duration}</Text>
-
-                    <View style={{padding:10, marginTop: 10, marginBottom: 10, backgroundColor: style.getStyle().label}}>
-                        <Text style={{color: style.getStyle().fontColor2}}>{language.getLanguage()[4]}</Text>
-                    </View>
-                    <View style={{flexDirection: "row"}}>
-                        <Text style={{color: style.getStyle().fontColor ,marginLeft: 10, marginTop: 8}}>{language.getLanguage()[5]}</Text>
-                        <TextInput
-                            style={{textAlign: "center", marginLeft:10, height: 40, width: 60, borderColor: 'gray', borderWidth: 1 }}
-                            onChangeText={text => this.onChangeText1(text)}
-                            value={this.state.min}
-                        />
-                        <Text style={{color: style.getStyle().fontColor, marginLeft: 10, marginTop: 8}}>грн</Text>
-
-                        <Text style={{color: style.getStyle().fontColor, marginLeft: 35, marginTop: 8}}>{language.getLanguage()[6]}</Text>
-                        <TextInput
-                            style={{textAlign: "center", marginLeft: 10, height: 40, width: 60, borderColor: 'gray', borderWidth: 1 }}
-                            onChangeText={text => this.onChangeText2(text)}
-                            value={this.state.max}
-                        />
-                        <Text style={{color: style.getStyle().fontColor, marginLeft: 10, marginTop: 8}}>грн</Text>
-                    </View>
-
-
-                    <View style={{marginTop: 10}}>
-                        <Button
-                            color={style.getStyle().button}
-                            title={language.getLanguage()[7]}
-                            onPress={()=>{
-                                this.refs['Drawer'].closeDrawer()
-                                this.MainScreen.current.updateView(this.state.date, this.state.duration, {min: this.state.min, max: this.state.max})
-                                this.MainScreen.current.resetSearch()
-                            }}
-                        />
-                    </View>
-                    <View style={{marginTop: 10}}>
-                        <Button
-                            color={style.getStyle().button}
-                            title={language.getLanguage()[8]}
-                            onPress={()=>{
-                                this.setState({date: '', duration: 0, min: '', max: ''})
-                            }}
-                        />
-                    </View>
-
-
-                </View>
-                <View>
-                    <Button
-                        color={style.getStyle().button}
-                        title={language.getLanguage()[17]}
-                        onPress={()=>{
-
-                        }}
-                    />
-                </View>
-
-            </View>
-        )
-
         return (
+            <>
+                <DrawerLayoutAndroid
+                    ref={'Drawer'}
+                    drawerWidth={300}
+                    drawerPosition={'left'}
+                    renderNavigationView={() => <Sidebar openSidebar={this.openSidebar} closeSidebar={this.closeSidebar} ref={this.Sidebar} />}
+                >
+                <Settings ref={this.Settings} changeLanguage={this.changeLanguage} changeTheme={this.changeTheme} visible={false} />
+                <Header
+                    backgroundColor={styles.getStyle().header}
+                    leftComponent={
+                        <IconButton
+                            icon="menu"
+                            color={'#ffffff'}
+                            size={24}
+                            onPress={() => this.openSidebar()}
+                        />
+                    }
+                    centerComponent={{ text: 'TIME 2 TRAVEL', style: { color: '#fff', fontWeight: "bold", fontSize: 16 } }}
+                    rightComponent={
+                        <IconButton
+                            icon="cog"
+                            color={'#ffffff'}
+                            size={24}
+                            onPress={() => this.Settings.current.openModal()}
+                        />
+                    }
+                />
 
-            <DrawerLayoutAndroid
-                ref={'Drawer'}
-                drawerWidth={300}
-                drawerPosition={'left'}
-                renderNavigationView={() => navigationView}
-            >
-                <MainScreen ref={this.MainScreen} openDrawer={() => this.refs['Drawer'].openDrawer()} changeLanguage={this.changeLanguage} changeStyle={this.changeStyle} />
-            </DrawerLayoutAndroid>
+                <MainScreen ref={this.MainScreen} list={this.state.data}/>
+                </DrawerLayoutAndroid>
+            </>
         );
     }
 };
-
-export default App;

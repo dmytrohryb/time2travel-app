@@ -78,6 +78,7 @@ class Input extends React.Component {
       labelProps,
       theme,
       renderErrorMessage,
+      style,
       ...attributes
     } = this.props;
 
@@ -118,16 +119,18 @@ class Input extends React.Component {
             testID="RNE__Input__text-input"
             underlineColorAndroid="transparent"
             editable={!disabled}
-            {...patchWebProps(attributes)}
             ref={(ref) => {
               this.input = ref;
             }}
             style={StyleSheet.flatten([
-              styles.input,
+              styles.input(theme),
               inputStyle,
               disabled && styles.disabledInput,
               disabled && disabledInputStyle,
+              style,
             ])}
+            placeholderTextColor={theme.colors.grey3}
+            {...patchWebProps(attributes)}
           />
 
           {rightIcon && (
@@ -214,13 +217,13 @@ const styles = {
     paddingRight: 4,
     marginVertical: 4,
   },
-  input: {
+  input: (theme) => ({
     alignSelf: 'center',
-    color: 'black',
+    color: theme.colors.black,
     fontSize: 18,
     flex: 1,
     minHeight: 40,
-  },
+  }),
   error: (theme) => ({
     margin: 5,
     fontSize: 12,

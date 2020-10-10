@@ -1,42 +1,14 @@
-import {
-    Text,
-    View,
-    Button,
-    ScrollView,
-    Modal,
-    TouchableHighlight,
-    StyleSheet,
-    Image,
-    Switch,
-    TouchableOpacity
-} from "react-native"
-import React from "react"
-import {Header} from "react-native-elements"
-import axios from 'axios'
-import {ListPreview} from "../components/ListPreview"
-const shuffle = require('../components/KnuthShuffle').knuthShuffle
-import {IconButton, ActivityIndicator, Colors, Searchbar, Chip} from "react-native-paper"
-import languages from "../configs/lang-config"
-import AsyncStorage from '@react-native-community/async-storage'
-import style from "../configs/style-config"
+import React from 'react';
+import {Searchbar} from 'react-native-paper';
+import axios from 'axios';
+import {ListPreview} from '../components/ListPreview';
+import {Button, Text, View, ScrollView} from 'react-native';
+import styles from '../configs/style-config'
+import languages from '../configs/lang-config'
+import {ActivityIndicator} from 'react-native-paper'
+import {Sortbar} from '../components/Sortbar';
 
-const storeData = async (value) => {
-    try {
-        await AsyncStorage.setItem('lang', value)
-    } catch (e) {
-        // saving error
-    }
-}
-
-const addStoreStyle = async  (value) => {
-    try{
-        await AsyncStorage.setItem('style', value)
-    }catch (e){
-
-    }
-}
-
-export class MainScreen extends React.Component{
+export class MainScreen extends React.Component {
 
     constructor(props) {
         super(props);
@@ -46,67 +18,29 @@ export class MainScreen extends React.Component{
             currentScreen: 1,
             countScreens: 1,
             list2: [],
-            modalVisible: false,
             search: ''
         }
+
         this.ListPreview = React.createRef()
-        this.updateView = this.updateView.bind(this)
-        this.getChildState = this.getChildState.bind(this)
-        this.setModalVisible = this.setModalVisible.bind(this)
-        this.toggleSwitch = this.toggleSwitch.bind(this)
-        this.changeLanguage = this.changeLanguage.bind(this)
+        this.getListPreviewState = this.getListPreviewState.bind(this)
         this.search = this.search.bind(this)
-        this.resetSearch = this.resetSearch.bind(this)
     }
 
-    setModalVisible = (visible) => {
-        this.setState({ modalVisible: visible });
-    }
-
-    resetSearch(){
-        this.setState({search: ''})
-    }
-
-    updateView(date, duration, cost){
-        this.setState({loaded: false})
-
+    componentDidMount() {
         axios.post('https://parser-for-time2travel.herokuapp.com/',{
-            date, duration, cost
+            date: '', duration: '', cost: {min: '', max: ''}
         })
             .then(res => {
-                this.setState({loaded: true, list: shuffle(res.data)})
-
+                this.setState({list: res.data, loaded: true})
             })
             .catch(err => {
                 console.error(err.message)
             })
     }
 
-    getChildState(cur, count){
-
-        this.setState({loaded: true, currentScreen: cur, countScreens: count})
-
-    }
-
-    changeLanguage(data){
-        if(data){
-            this.props.changeLanguage(data)
-        }
-
-    }
-
-    toggleSwitch(styl){
-        addStoreStyle(styl)
-        style.setStyle().then(res=>{
-            this.props.changeStyle()
-        })
-    }
-
-    search = (value) => {
+    search(value) {
         let tempData = []
         let count = 0
-
-
 
         for(let i = 0; i < this.state.list.length; i++){
             if(this.state.list[i].title.match(value) || this.state.list[i].location.match(value)){
@@ -119,343 +53,46 @@ export class MainScreen extends React.Component{
         })
     }
 
+    getListPreviewState(cur, count){
+        this.setState({currentScreen: cur, countScreens: count})
+    }
+
     render() {
-        let backBtn
-        let nextBtn
+        let backBtn, nextBtn
+        return <>
+            <Searchbar style={{backgroundColor: styles.getStyle().searchbar}} onChangeText={this.search}></Searchbar>
 
-        if(this.state.loaded){
-            return(
-                <View style={{backgroundColor: style.getStyle().backgroundContent, flex: 1}}>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={this.state.modalVisible}
-                    >
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <View style={{width: 200, height: 300, flexDirection:"column"}}>
-                                    <View>
-                                        <View style={{alignItems: "center"}}>
-                                            <Text style={{fontWeight: "bold", fontSize: 20}}>{languages.getLanguage()[10]}</Text>
-                                        </View>
-
-                                            <Text style={{fontWeight: "bold", fontSize: 20, color: "grey"}}>{languages.getLanguage()[11]}</Text>
-                                            <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 10}}>
-                                                <TouchableOpacity onPress={() => {
-                                                    this.toggleSwitch("light")
-
-                                                }}>
-                                                    <Image
-                                                        style={{width: 50, height: 50}}
-                                                        source={require('../../img/1.png')}
-                                                    />
-                                                </TouchableOpacity>
-                                                <TouchableOpacity onPress={() => {
-                                                    this.toggleSwitch("dark")
-
-                                                }}>
-                                                    <Image
-                                                        style={{width: 50, height: 50}}
-                                                        source={require('../../img/2.png')}
-                                                    />
-                                                </TouchableOpacity>
-                                                <TouchableOpacity onPress={() => {
-                                                    this.toggleSwitch("red")
-                                                }}>
-                                                    <Image
-                                                        style={{width: 50, height: 50}}
-                                                        source={require('../../img/3.png')}
-                                                    />
-                                                </TouchableOpacity>
-                                            </View>
-                                        <View style={{flexDirection: "column", marginTop: 10}}>
-                                            <View style={{justifyContent: "center"}}>
-                                                <Text style={{fontSize: 20, fontWeight: "bold", color: "grey"}}>{languages.getLanguage()[12]}</Text>
-                                            </View>
-
-                                            <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 10}}>
-                                                <TouchableOpacity onPress={() => {
-                                                    storeData("ukr")
-                                                    languages.setLanguage().then(res=>{
-                                                        this.changeLanguage(res)
-                                                    })
-                                                }}>
-                                                    <Image
-                                                        style={{width: 50, height: 50}}
-                                                        source={require('../../img/ukr.png')}
-                                                    />
-                                                </TouchableOpacity>
-                                                <TouchableOpacity onPress={() => {
-                                                    storeData("eng")
-                                                    languages.setLanguage().then(res=>{
-                                                        this.changeLanguage(res)
-                                                    })
-                                                }}>
-                                                    <Image
-                                                        style={{width: 50, height: 50}}
-                                                        source={require('../../img/eng.png')}
-                                                    />
-                                                </TouchableOpacity>
-                                                <TouchableOpacity onPress={() => {
-                                                    storeData("rus")
-                                                    languages.setLanguage().then(res=>{
-                                                        this.changeLanguage(res)
-                                                    })
-                                                }}>
-                                                    <Image
-                                                        style={{width: 50, height: 50}}
-                                                        source={require('../../img/rus.png')}
-                                                    />
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
-                                    </View>
-                                        <TouchableOpacity
-                                            style={{ backgroundColor: style.getStyle().button, height: 40, marginTop: 20, alignItems: "center", justifyContent: "center"}}
-                                            onPress={() => {
-                                                this.setModalVisible(!this.state.modalVisible);
-                                            }}
-                                        >
-                                            <Text style={{fontSize: 16, fontWeight: "bold", color:"#fff"}}>{languages.getLanguage()[13]}</Text>
-                                        </TouchableOpacity>
-                                            <TouchableHighlight
-                                                style={{ backgroundColor: style.getStyle().button, height: 40, marginTop: 10, alignItems: "center", justifyContent: "center"}}
-                                                onPress={() => {
-                                                    this.setModalVisible(!this.state.modalVisible);
-                                                }}
-                                            >
-                                        <Text style={{fontSize: 16, fontWeight: "bold", color:"#fff"}}>{languages.getLanguage()[14]}</Text>
-                                    </TouchableHighlight>
-
-                                </View>
-                            </View>
-                        </View>
-                    </Modal>
-                    <Header
-                        backgroundColor={style.getStyle().header}
-                        leftComponent={
-                            <IconButton
-                                icon="menu"
-                                color={'#ffffff'}
-                                size={24}
-                                onPress={() => this.props.openDrawer()}
-                            />
-                        }
-                        centerComponent={{ text: 'TIME 2 TRAVEL', style: { color: '#fff', fontWeight: "bold", fontSize: 16 } }}
-                        rightComponent={
-                            <IconButton
-                                icon="cog"
-                                color={'#ffffff'}
-                                size={24}
-                                onPress={() => this.setModalVisible(true)}
-                            />
-                        }
-                    />
-                    <Searchbar style={{backgroundColor: style.getStyle().searchbar}} onChangeText={this.search}></Searchbar>
-                        <View style={{backgroundColor: style.getStyle().blockNaideno, justifyContent:"center"}}>
-                            <Text style={{alignSelf: "center", fontWeight: "bold", color:"grey"}}>
-                                 {languages.getLanguage()[9]} {(this.state.search === '') ? this.state.list.length : this.state.list2.length}
-                            </Text>
-                        </View>
-
-                        <ScrollView style={{marginBottom: 35}}>
-                            <ListPreview ref={this.ListPreview} stateUp={this.getChildState} list={(this.state.search === '') ? this.state.list : this.state.list2} />
-                        </ScrollView>
-
+            <View style={{backgroundColor: styles.getStyle().blockNaideno, justifyContent:"center"}}>
+                <Text style={{alignSelf: "center", fontWeight: "bold", color:"grey"}}>
+                    {languages.getLanguage()[9]} {(this.state.search === '') ? this.state.list.length : this.state.list2.length}
+                </Text>
+            </View>
+            <Sortbar />
+            {(this.state.loaded) ? <>
+                    <ScrollView style={{marginBottom: 35}}>
+                        <ListPreview ref={this.ListPreview} list={(this.state.search === '') ? this.state.list : this.state.list2} stateUp={this.getListPreviewState}/>
+                    </ScrollView>
 
                     {(this.state.currentScreen > 1) ? backBtn = false : backBtn = true}
                     {(this.state.currentScreen < this.state.countScreens) ? nextBtn = false : nextBtn = true}
+                    <View style={{backgroundColor: '#efefef', flexDirection: "row", position: 'absolute', bottom:0, justifyContent:"center", width:"100%"}}>
 
-
-                        <View style={{backgroundColor: '#efefef', flexDirection: "row", position: 'absolute', bottom:0, justifyContent:"center", width:"100%"}}>
-
-                            <Button color={style.getStyle().button} title={'        <<        '} disabled={backBtn} onPress={() => {
-                                this.ListPreview.current.setScreen(this.state.currentScreen - 1)
-                            }}/>
-                            <View style={{margin: 7}}>
-                                <Text style={{fontWeight: "bold", color: 'grey'}}>{this.state.currentScreen} / {this.state.countScreens}</Text>
-                            </View>
-                            <Button color={style.getStyle().button} title={'        >>        '} disabled={nextBtn} onPress={() => {
-                                this.ListPreview.current.setScreen(this.state.currentScreen + 1)
-                            }}/>
+                        <Button color={styles.getStyle().button} title={'        <<        '} disabled={backBtn} onPress={() => {
+                            this.ListPreview.current.setScreen(this.state.currentScreen - 1)
+                        }}/>
+                        <View style={{margin: 7}}>
+                            <Text style={{fontWeight: "bold", color: 'grey'}}>{this.state.currentScreen} / {this.state.countScreens}</Text>
                         </View>
+                        <Button color={styles.getStyle().button} title={'        >>        '} disabled={nextBtn} onPress={() => {
+                            this.ListPreview.current.setScreen(this.state.currentScreen + 1)
+                        }}/>
+                    </View>
+                </> : <>
+                    <View style={{alignItems: "center", justifyContent: "center", height: "85%"}}>
+                        <ActivityIndicator animating={true} color={styles.getStyle().button} size="large" />
+                    </View>
+                </>}
 
-                </View>
-            );
-        }else{
-            return(
-                <View>
-                    <Modal
-                        animationType="slide"
-                        transparent={true}
-                        visible={this.state.modalVisible}
-                    >
-                        <View style={styles.centeredView}>
-                            <View style={styles.modalView}>
-                                <View style={{width: 200, height: 300, flexDirection:"column"}}>
-                                    <View>
-                                        <View style={{alignItems: "center"}}>
-                                            <Text style={{fontWeight: "bold", fontSize: 20}}>{languages.getLanguage()[10]}</Text>
-                                        </View>
-
-                                        <Text style={{fontWeight: "bold", fontSize: 20, color: "grey"}}>{languages.getLanguage()[11]}</Text>
-                                        <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 10}}>
-                                            <TouchableOpacity onPress={() => {
-                                                this.toggleSwitch("light")
-
-                                            }}>
-                                                <Image
-                                                    style={{width: 50, height: 50}}
-                                                    source={require('../../img/1.png')}
-                                                />
-                                            </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => {
-                                                this.toggleSwitch("dark")
-
-                                            }}>
-                                                <Image
-                                                    style={{width: 50, height: 50}}
-                                                    source={require('../../img/2.png')}
-                                                />
-                                            </TouchableOpacity>
-                                            <TouchableOpacity onPress={() => {
-                                                this.toggleSwitch("red")
-                                            }}>
-                                                <Image
-                                                    style={{width: 50, height: 50}}
-                                                    source={require('../../img/3.png')}
-                                                />
-                                            </TouchableOpacity>
-                                        </View>
-                                        <View style={{flexDirection: "column", marginTop: 10}}>
-                                            <View style={{justifyContent: "center"}}>
-                                                <Text style={{fontSize: 20, fontWeight: "bold", color: "grey"}}>{languages.getLanguage()[12]}</Text>
-                                            </View>
-
-                                            <View style={{flexDirection: "row", justifyContent: "space-between", marginTop: 10}}>
-                                                <TouchableOpacity onPress={() => {
-                                                    storeData("ukr")
-                                                    languages.setLanguage().then(res=>{
-                                                        this.changeLanguage(res)
-                                                    })
-                                                }}>
-                                                    <Image
-                                                        style={{width: 50, height: 50}}
-                                                        source={require('../../img/ukr.png')}
-                                                    />
-                                                </TouchableOpacity>
-                                                <TouchableOpacity onPress={() => {
-                                                    storeData("eng")
-                                                    languages.setLanguage().then(res=>{
-                                                        this.changeLanguage(res)
-                                                    })
-                                                }}>
-                                                    <Image
-                                                        style={{width: 50, height: 50}}
-                                                        source={require('../../img/eng.png')}
-                                                    />
-                                                </TouchableOpacity>
-                                                <TouchableOpacity onPress={() => {
-                                                    storeData("rus")
-                                                    languages.setLanguage().then(res=>{
-                                                        this.changeLanguage(res)
-                                                    })
-                                                }}>
-                                                    <Image
-                                                        style={{width: 50, height: 50}}
-                                                        source={require('../../img/rus.png')}
-                                                    />
-                                                </TouchableOpacity>
-                                            </View>
-                                        </View>
-                                    </View>
-                                    <TouchableOpacity
-                                        style={{ backgroundColor: style.getStyle().button, height: 40, marginTop: 20, alignItems: "center", justifyContent: "center"}}
-                                        onPress={() => {
-                                            this.setModalVisible(!this.state.modalVisible);
-                                        }}
-                                    >
-                                        <Text style={{fontSize: 16, fontWeight: "bold", color:"#fff"}}>{languages.getLanguage()[13]}</Text>
-                                    </TouchableOpacity>
-                                    <TouchableHighlight
-                                        style={{ backgroundColor: style.getStyle().button, height: 40, marginTop: 10, alignItems: "center", justifyContent: "center"}}
-                                        onPress={() => {
-                                            this.setModalVisible(!this.state.modalVisible);
-                                        }}
-                                    >
-                                        <Text style={{fontSize: 16, fontWeight: "bold", color:"#fff"}}>{languages.getLanguage()[14]}</Text>
-                                    </TouchableHighlight>
-
-                                </View>
-                            </View>
-                        </View>
-                    </Modal>
-                    <Header
-                        backgroundColor={style.getStyle().header}
-                        leftComponent={
-                            <IconButton
-                                icon="menu"
-                                color={'#ffffff'}
-                                size={24}
-                                onPress={() => this.props.openDrawer()}
-                            />
-                        }
-                        centerComponent={{ text: 'TIME 2 TRAVEL', style: { color: '#fff', fontWeight: "bold", fontSize: 16 } }}
-                        rightComponent={
-                            <IconButton
-                                icon="cog"
-                                color={'#ffffff'}
-                                size={24}
-                                onPress={() => this.setModalVisible(true)}
-                            />
-                        }
-                    />
-
-                        <View style={{alignItems: "center", justifyContent: "center", height: "85%"}}>
-                            <ActivityIndicator animating={true} color={style.getStyle().button} size="large" />
-                        </View>
-
-                </View>
-            )
-        }
+        </>
     }
 }
-
-const styles = StyleSheet.create({
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 22
-    },
-    modalView: {
-        margin: 20,
-        backgroundColor: "white",
-        borderRadius: 20,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 5
-    },
-    openButton: {
-        backgroundColor: "#F194FF",
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2
-    },
-    textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: "center"
-    }
-});
