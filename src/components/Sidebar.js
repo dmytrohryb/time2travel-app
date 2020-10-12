@@ -6,6 +6,11 @@ import {IconButton} from 'react-native-paper';
 import Icon from 'react-native-vector-icons/dist/FontAwesome';
 import DatePicker from 'react-native-datepicker'
 import {Warning} from './Warning';
+const { DateTime } = require("luxon")
+
+const convertDate = (date) => {
+    return date[6] + date[7] + date[8] + date[9] + '-' + date[3] + date[4] + '-' + date[0] + date[1]
+}
 
 export class Sidebar extends React.Component {
     constructor(props) {
@@ -66,19 +71,10 @@ export class Sidebar extends React.Component {
         }
     }
 
-    dateCheck(){
-        if(this.state.startDate.length !== 0 && this.state.finishDate !== 0){
-            if(parseInt(this.state.startDate.substr(6, 4)) > parseInt(this.state.finishDate.substr(6, 4))){
-                return false
-            }
-            if(parseInt(this.state.startDate.substr(4, 2)) > parseInt(this.state.finishDate.substr(4, 2))){
-                return false
-            }
-            if(parseInt(this.state.startDate.substr(0, 2)) > parseInt(this.state.finishDate.substr(0, 2))){
-                return false
-            }
-        }
-        return true
+    firstMoreThanTheSecond(d1, d2){
+        let date1 = DateTime.fromISO(d1)
+        let date2 = DateTime.fromISO(d2)
+        return (date1 > date2) ? true : false
     }
 
     handlerApplyButton(){
@@ -90,11 +86,12 @@ export class Sidebar extends React.Component {
             return false
         }
 
-        if(!this.dateCheck()){
+        if(this.firstMoreThanTheSecond(convertDate(this.state.startDate), convertDate(this.state.finishDate))){
             this.Warning.current.showWarning(languages.getLanguage()[27])
             return false
         }
 
+        this.props.updateView(this.state)
         return true
     }
 
@@ -108,7 +105,6 @@ export class Sidebar extends React.Component {
     }
 
     render() {
-
         return <>
             <View style={{
                 flex: 1,

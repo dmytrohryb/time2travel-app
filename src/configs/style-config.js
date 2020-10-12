@@ -14,7 +14,7 @@ module.exports = {
         header: "#807cc3",
         blockNaideno: "#ded5ed",
         pressAnim: "#9492c3",
-        sortBar: "#e5dfee"
+        sortBar: "#f0edf5"
     },
     green:{
         searchbar: "#fff",
@@ -28,7 +28,7 @@ module.exports = {
         header: "#83a244",
         blockNaideno: "#e2ebc8",
         pressAnim: "#c7d697",
-        sortBar: "#e5dfee"
+        sortBar: "#f0f3e8"
     },
     red:{
         searchbar: "#fff",
@@ -42,7 +42,7 @@ module.exports = {
         header: "#e39d8d",
         blockNaideno: "#f1c1b6",
         pressAnim: "#e39d8d",
-        sortBar: "#e5dfee"
+        sortBar: "#f6ece9"
     },
     default:{
         searchbar: "#fff",
@@ -56,7 +56,7 @@ module.exports = {
         header: "#fff",
         blockNaideno: "#fff",
         pressAnim: "#fff",
-        sortBar: "#e5dfee"
+        sortBar: "#fff"
     },
     getStyle: function () {
         switch (this.style) {

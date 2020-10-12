@@ -65,7 +65,7 @@ export class Preview extends React.Component {
                             <Text>{this.props.date}</Text>
                         </View>
                         <View style={{flexDirection: "row"}}>
-                            <Text style={{color: style.getStyle().fontColor, fontWeight: "bold"}}>{languages.getLanguage()[2]} </Text>
+                            <Text style={{color: style.getStyle().fontColor, fontWeight: "bold"}}>{languages.getLanguage()[28] + ":"} </Text>
                             <Text>{this.props.duration} {dayText}</Text>
                         </View>
                     </View>

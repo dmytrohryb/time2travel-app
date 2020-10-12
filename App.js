@@ -22,6 +22,11 @@ export class App extends React.Component {
         this.changeTheme = this.changeTheme.bind(this)
         this.openSidebar = this.openSidebar.bind(this)
         this.closeSidebar = this.closeSidebar.bind(this)
+        this.updateView = this.updateView.bind(this)
+    }
+
+    updateView(data){
+        this.MainScreen.current.updateView(data)
     }
 
     changeLanguage(){
@@ -57,7 +62,7 @@ export class App extends React.Component {
                     ref={'Drawer'}
                     drawerWidth={300}
                     drawerPosition={'left'}
-                    renderNavigationView={() => <Sidebar openSidebar={this.openSidebar} closeSidebar={this.closeSidebar} ref={this.Sidebar} />}
+                    renderNavigationView={() => <Sidebar updateView={this.updateView} openSidebar={this.openSidebar} closeSidebar={this.closeSidebar} ref={this.Sidebar} />}
                 >
                 <Settings ref={this.Settings} changeLanguage={this.changeLanguage} changeTheme={this.changeTheme} visible={false} />
                 <Header

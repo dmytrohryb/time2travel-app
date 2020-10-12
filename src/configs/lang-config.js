@@ -30,7 +30,15 @@ module.exports = {
         "грн",
         "OK",
         "Мінімальна ціна не може перевищувати максимальну ціну, будь-ласка звеніть увагу на фільтр діапазону цін",
-        "Початкова дата не може бути більшою за кінцеву дату, будь-ласка зверніть увагу на фільтр діапазону дат"
+        "Початкова дата не може бути більшою за кінцеву дату, будь-ласка зверніть увагу на фільтр діапазону дат",
+        "Тривалість",
+        "Список підключених сайтів:", //29
+        "Extremeguide.pro",
+        "Greentravel.biz",
+        "Kuluarpohod.com",
+        "Marshrut-club.com",
+        "Pohod-v-gory.com",
+        "Proydisvit.com"
     ],
     rus:[
         "Начальная дата:",
@@ -60,7 +68,15 @@ module.exports = {
         "грн",
         "OK",
         "Минимальная цена не может превышать максимальную цену, обратите внимание на фильтр диапазона цен",
-        "Начальная дата не может быть больше конечной даты, обартите внимание на фильтр диапазона дат"
+        "Начальная дата не может быть больше конечной даты, обартите внимание на фильтр диапазона дат",
+        "Длительность",
+        "Список подключенных сайтов:", //29
+        "Extremeguide.pro",
+        "Greentravel.biz",
+        "Kuluarpohod.com",
+        "Marshrut-club.com",
+        "Pohod-v-gory.com",
+        "Proydisvit.com"
     ],
     eng:[
         "Start date:",
@@ -90,7 +106,15 @@ module.exports = {
         "UAH",
         "OK",
         "The minimum price cannot be higher than the maximum, please note the price range filter",
-        "Start date cannot be greater than end date, please note the date range filter"
+        "Start date cannot be greater than end date, please note the date range filter",
+        "Duration",
+        "List of connected sites:", //29
+        "Extremeguide.pro",
+        "Greentravel.biz",
+        "Kuluarpohod.com",
+        "Marshrut-club.com",
+        "Pohod-v-gory.com",
+        "Proydisvit.com"
     ],
     default:[
         "           ",
@@ -111,6 +135,7 @@ module.exports = {
         "     ",
         "     ",
         "                        ",
+        " ",
         " ",
         " ",
         " "
